@@ -98,7 +98,6 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         View view=getView();
-        getDialog().setTitle(titulo);
         setListener(view);
         listener = (IComunicacionListener) getActivity();
     }
