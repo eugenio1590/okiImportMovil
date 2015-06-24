@@ -1,13 +1,15 @@
 package app.okiimport.com.okiimport;
 
 import android.os.Bundle;
+import android.view.View;
 
 import app.okiimport.com.okiimport.fragmentos.*;
 import librerias.componentes.Fragmento;
+import librerias.componentes.IComunicacionListener;
 
 import java.util.ArrayList;
 
-public class ActInicio extends ActRequerimiento {
+public class ActInicio extends ActRequerimiento implements IComunicacionListener {
 
     /**CONSTRUCTOR*/
     public ActInicio() {
@@ -33,5 +35,22 @@ public class ActInicio extends ActRequerimiento {
 
             default: return null;
         }
+    }
+
+    /**INTERFACE*/
+    //1. IComunicacionListener
+    @Override
+    public void onClickBoton(View v) {
+
+    }
+
+    @Override
+    public void onClickSelected(String obj, int pos) {
+
+    }
+
+    @Override
+    public void cancelar() {
+
     }
 }

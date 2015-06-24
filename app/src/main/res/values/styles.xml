@@ -7,6 +7,7 @@
         <item name="android:colorPrimaryDark">@color/ColorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/TextColorPrimary</item>
         <item name="android:icon">@drawable/ic_launcher</item>
+        <item name="android:colorAccent">@color/accent_material_light</item>
     </style>
     <!--parent="Theme.AppCompat.Light.DarkActionBar"-->
 </resources>

@@ -3,4 +3,5 @@
     <color name="ColorPrimary">#2196f3</color>
     <color name="ColorPrimaryDark">#428bca</color>
     <color name="TextColorPrimary">#ffffff</color>
+    <color name="Negro">#ff000000</color>
 </resources>

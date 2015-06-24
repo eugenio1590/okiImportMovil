@@ -85,16 +85,25 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 	}
 	
 	/**EVENTOS*/
-	@Override
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(layout, container);
 		getDialog().setTitle(titulo);
 		setListener(view);
 		listener = (IComunicacionListener) getActivity();
 		return view;
-	};
-	
-	@Override
+	}
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        View view=getView();
+        getDialog().setTitle(titulo);
+        setListener(view);
+        listener = (IComunicacionListener) getActivity();
+    }
+
+    @Override
 	public void show(FragmentManager manager, String tag) {
 		// TODO Auto-generated method stub
 		super.show(manager, tag);
@@ -234,7 +243,6 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 		if(this.tabla!=null)
 			this.tabla.removeAllViews();
 	}
-
 
 
 

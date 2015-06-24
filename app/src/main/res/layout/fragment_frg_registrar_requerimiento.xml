@@ -1,7 +1,56 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context="app.okiimport.com.okiimport.fragmentos.FrgRegistrarRequerimiento">
 
-</FrameLayout>
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="103dp"
+                android:layout_height="match_parent"
+                android:text="Cedula/Rif *"
+                android:layout_gravity="left|top" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <Spinner
+                    android:layout_width="50dp"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/spnFRQTipoPersona"
+                    />
+
+                <EditText
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/txtFRQCedula"
+                    android:layout_gravity="center"
+                    android:textColor="@color/Negro"/>
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"></TableRow>
+
+    </TableLayout>>
+</ScrollView>

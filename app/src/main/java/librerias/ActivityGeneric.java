@@ -112,11 +112,14 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 		Log.i(titulo, msj);
         Log.d(titulo, msj);
         Log.e(titulo, msj);
+        Log.v(titulo, msj);
+        Log.w(titulo, msj);
 	}
 	
 	//3. Permitira Cargar la informacion del vector en el combo respectivo
 	public static void cargarCombo(int id, Object objeto, Vector<ObjetosCombo> vector){
-		ActivityGeneric.combo_lista =  new LinkedList<ObjetosCombo>();
+		imprimirConsola("Cargar Combo", "");
+        ActivityGeneric.combo_lista =  new LinkedList<ObjetosCombo>();
 		for(int i=0; i<vector.size(); i++){
 			combo_lista.add(vector.get(i));
 		}
@@ -130,12 +133,15 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 				View view = (View) objeto;
 				spinner_adapter = new ArrayAdapter<ObjetosCombo>(view.getContext(), android.R.layout.simple_spinner_item, combo_lista);
 				combo = (Spinner) view.findViewById(id);
+                imprimirConsola("Vacio: ",""+spinner_adapter.isEmpty());
 			}
 			else
 				return;
 			spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			if(combo!=null)
 				combo.setAdapter(spinner_adapter);
+            else
+                imprimirConsola("Error", "Combo Vacio");
 		}
 		else
 			imprimirConsola("Error:", "Lista Vacia");

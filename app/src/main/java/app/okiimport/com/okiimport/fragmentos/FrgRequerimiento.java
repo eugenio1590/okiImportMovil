@@ -3,13 +3,18 @@ package app.okiimport.com.okiimport.fragmentos;
 import android.app.Activity;
 import android.net.Uri;
 
+import java.util.Vector;
+
 import app.okiimport.com.okiimport.ActRequerimiento;
+import conexion.IConexionDAO;
 import librerias.componentes.Fragmento;
 
 //Clase base para los fragmentos del Navigation
 public abstract class FrgRequerimiento extends Fragmento {
 
     private OnFragmentInteractionListener mListener;
+
+    protected static Vector<IConexionDAO.ObjetosCombo> tiposPersona;
 
     /**
      * Constructor de la Clase
@@ -59,5 +64,13 @@ public abstract class FrgRequerimiento extends Fragmento {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    /**METODOS ESTATICOS DE LA CLASE*/
+    public static Vector<IConexionDAO.ObjetosCombo> llenarTiposPersona(){
+        tiposPersona = new Vector<IConexionDAO.ObjetosCombo>();
+        tiposPersona.add(new IConexionDAO.ObjetosCombo(true, "V"));
+        tiposPersona.add(new IConexionDAO.ObjetosCombo(false, "J"));
+        return tiposPersona;
     }
 }

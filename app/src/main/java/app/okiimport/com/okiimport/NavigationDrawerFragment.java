@@ -270,6 +270,8 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
         actionBar.setIcon(R.drawable.ic_launcher);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
     }
 
     private ActionBar getActionBar() {

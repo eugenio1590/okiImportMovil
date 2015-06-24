@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import app.okiimport.com.okiimport.R;
 
-
 public class FrgVerificarRequerimiento extends FrgRequerimiento {
 
     public static final String TITULO = EFrgTitulos.FRG_VEFIRICAR_REQUERIMIENTO.getValue();
@@ -18,11 +17,11 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento {
         super(TITULO, R.layout.fragment_frg_verificar_requerimiento);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_frg_verificar_requerimiento, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_frg_verificar_requerimiento, container, false);
+        return inflate;
     }
 
     @Override

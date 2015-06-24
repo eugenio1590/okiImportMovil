@@ -17,6 +17,7 @@ public abstract class ActRequerimiento extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
                     FrgRequerimiento.OnFragmentInteractionListener {
 
+    protected Menu menu;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -60,6 +61,7 @@ public abstract class ActRequerimiento extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
+            this.menu = menu;
             getMenuInflater().inflate(menuActiv, menu);
             restoreActionBar();
             return true;
@@ -105,6 +107,12 @@ public abstract class ActRequerimiento extends ActionBarActivity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        /*if(this.menu!=null){
+            MenuItem item = menu.findItem(R.id.imTitle);
+            item.setTitle(mTitle);
+        }*/
     }
 
     /**INTERFACE DE COMUNICACION*/

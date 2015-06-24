@@ -1,19 +1,23 @@
 package app.okiimport.com.okiimport.fragmentos;
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 import app.okiimport.com.okiimport.R;
+import librerias.ActivityGeneric;
 
 public class FrgRegistrarRequerimiento extends FrgRequerimiento {
 
     public static final String TITULO = EFrgTitulos.FRG_REGISTRAR_REQUERIMIENTO.getValue();
 
+    private Spinner spnFRQTipoPersona;
+
     public FrgRegistrarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_registrar_requerimiento);
+        ActivityGeneric.imprimirConsola("Paso", "Consola");
     }
 
     @Override
@@ -29,7 +33,8 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento {
 
     @Override
     protected void setListener(View view) {
-
+        spnFRQTipoPersona = (Spinner) view.findViewById(R.id.spnFRQTipoPersona);
+        ActivityGeneric.cargarCombo(R.id.spnFRQTipoPersona, view, llenarTiposPersona());
     }
 
     @Override
