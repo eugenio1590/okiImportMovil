@@ -9,5 +9,12 @@
         <item name="android:icon">@drawable/ic_launcher</item>
         <item name="android:colorAccent">@color/accent_material_light</item>
     </style>
+
+    <style name="BaseButton">
+        <item name="android:background">@drawable/selector_button</item>
+        <item name="android:textColor">@color/Blanco</item>
+        <item name="android:padding">10px</item>
+        <item name="android:layout_margin">10px</item>
+    </style>
     <!--parent="Theme.AppCompat.Light.DarkActionBar"-->
 </resources>
