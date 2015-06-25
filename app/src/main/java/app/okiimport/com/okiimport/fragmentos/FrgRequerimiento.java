@@ -64,6 +64,7 @@ public abstract class FrgRequerimiento extends Fragmento {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+        public void onShowFragment(Fragmento fragmento);
     }
 
     /**METODOS ESTATICOS DE LA CLASE*/

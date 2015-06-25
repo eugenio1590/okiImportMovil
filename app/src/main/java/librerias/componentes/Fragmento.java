@@ -8,10 +8,11 @@ import librerias.FragmentoActivity;
 import librerias.IFuncionesFormularios;
 
 import android.app.ActionBar.LayoutParams;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -87,11 +88,7 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 	/**EVENTOS*/
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(layout, container);
-		getDialog().setTitle(titulo);
-		setListener(view);
-		listener = (IComunicacionListener) getActivity();
-		return view;
+		return inflater.inflate(layout, container, false);
 	}
 
     @Override
@@ -100,6 +97,14 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
         View view=getView();
         setListener(view);
         listener = (IComunicacionListener) getActivity();
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setTitle(titulo);
+        return dialog;
     }
 
     @Override

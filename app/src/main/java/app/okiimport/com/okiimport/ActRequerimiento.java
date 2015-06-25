@@ -120,4 +120,10 @@ public abstract class ActRequerimiento extends ActionBarActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    public void onShowFragment(Fragmento fragmento) {
+        FragmentManager fm = getSupportFragmentManager();
+        fragmento.show(fm, "fragment");
+    }
 }

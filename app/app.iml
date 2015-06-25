@@ -84,6 +84,7 @@
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="spring-android-rest-template-2.0.0.M1" level="project" />
+    <orderEntry type="library" exported="" name="circularprogressview-2.3.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-6.1.71" level="project" />
   </component>
 </module>

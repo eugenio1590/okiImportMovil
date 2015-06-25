@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import app.okiimport.com.okiimport.fragmentos.*;
+import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import librerias.componentes.Fragmento;
 import librerias.componentes.IComunicacionListener;
 

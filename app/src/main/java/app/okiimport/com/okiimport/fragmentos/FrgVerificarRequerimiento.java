@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import app.okiimport.com.okiimport.R;
+import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 
 public class FrgVerificarRequerimiento extends FrgRequerimiento {
 
