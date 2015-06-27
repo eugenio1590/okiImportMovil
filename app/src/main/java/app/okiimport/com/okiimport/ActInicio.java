@@ -1,16 +1,19 @@
 package app.okiimport.com.okiimport;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import app.okiimport.com.okiimport.fragmentos.*;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import librerias.componentes.Fragmento;
 import librerias.componentes.IComunicacionListener;
+import servicio.AbstractAsyncTask.IComunicatorBackgroundTask;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-public class ActInicio extends ActRequerimiento implements IComunicacionListener {
+public class ActInicio extends ActRequerimiento implements IComunicacionListener, IComunicatorBackgroundTask {
 
     /**CONSTRUCTOR*/
     public ActInicio() {
@@ -52,6 +55,27 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
 
     @Override
     public void cancelar() {
+
+    }
+
+    //2. IComunicatorBackgroundTask
+    @Override
+    public String executePreInBackground(Integer id) {
+        return null;
+    }
+
+    @Override
+    public String executePostInBackground(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void executeOnPostExecute(Map<String, Object> result) {
+        ((FrgRequerimiento)this.fragmento).onViewProcesar((Integer) result.get("idComponent"), result);
+    }
+
+    @Override
+    public void showFragment(Fragment fragment) {
 
     }
 }

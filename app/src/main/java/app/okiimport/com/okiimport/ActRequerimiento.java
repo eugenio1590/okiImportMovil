@@ -40,6 +40,11 @@ public abstract class ActRequerimiento extends ActionBarActivity
     protected Integer drawerLayout;
     protected Integer menuActiv;
 
+    /**
+     * Usado para saber el fragmento actual mostrado
+     */
+    protected Fragmento fragmento;
+
     public ActRequerimiento(Integer navigationDrawer, Integer drawerLayout, Integer menuActiv){
         this.navigationDrawer = navigationDrawer;
         this.drawerLayout = drawerLayout;
@@ -50,8 +55,9 @@ public abstract class ActRequerimiento extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmento = newInstanceFragment(position + 1);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, newInstanceFragment(position + 1))
+                .replace(R.id.container, fragmento)
                 .commit();
     }
 

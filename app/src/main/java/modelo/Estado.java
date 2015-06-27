@@ -13,7 +13,7 @@ public class Estado implements Serializable {
 
 	private String nombre;
 
-	//private List<Ciudad> ciudads;
+	private List<Ciudad> ciudads;
 
 	public Estado() {
 	}
@@ -38,7 +38,6 @@ public class Estado implements Serializable {
 		this.nombre = nombre;
 	}
 
-    /*
 	public List<Ciudad> getCiudads() {
 		return this.ciudads;
 	}
@@ -60,5 +59,4 @@ public class Estado implements Serializable {
 
 		return ciudad;
 	}
-    */
 }

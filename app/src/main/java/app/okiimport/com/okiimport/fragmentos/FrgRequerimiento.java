@@ -3,6 +3,7 @@ package app.okiimport.com.okiimport.fragmentos;
 import android.app.Activity;
 import android.net.Uri;
 
+import java.util.Map;
 import java.util.Vector;
 
 import app.okiimport.com.okiimport.ActRequerimiento;
@@ -26,13 +27,6 @@ public abstract class FrgRequerimiento extends Fragmento {
         super(titulo, layout);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -50,6 +44,9 @@ public abstract class FrgRequerimiento extends Fragmento {
         super.onDetach();
         mListener = null;
     }
+
+    /**METODOS ABSTRACTOS DE LA CLASE*/
+    public abstract void onViewProcesar(Integer idView, Map<String, Object> result);
 
     /**
      * This interface must be implemented by activities that contain this

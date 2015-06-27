@@ -24,6 +24,10 @@ android {
     packagingOptions {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/license.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
     }
 }
 
@@ -33,6 +37,8 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.0'
     compile 'com.google.android.gms:play-services:6.1.71'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
 }
 repositories {
