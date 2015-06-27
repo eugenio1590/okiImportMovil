@@ -23,7 +23,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
     protected static final String URL = "http://192.168.1.121:8080/web_service/rest";
 
-    private FrgProgressBar frgProgressBar;
+    private static FrgProgressBar frgProgressBar;
 
     private IComunicatorBackgroundTask padre;
 
@@ -35,14 +35,17 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
     protected Map<String, Object> params;
 
+    protected boolean closeFrgProgressBar;
+
     /**Constructor
      * @param padre: Activity que instancio el BackgroundTask
      * @param domain: Representa la clase del dominio
      * */
-    public AbstractAsyncTask(IComunicatorBackgroundTask padre, Class<T> domain) {
+    public AbstractAsyncTask(IComunicatorBackgroundTask padre, Class<T> domain, boolean closeFrgProgressBar) {
         // TODO Auto-generated constructor stub
         this.padre = padre;
         this.domain = domain;
+        this.closeFrgProgressBar = closeFrgProgressBar;
     }
 
     /**EVENTOS*/
@@ -50,8 +53,10 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     protected void onPreExecute()
     {
         //mostramos el círculo de progreso
-        frgProgressBar = new FrgProgressBar();
-        padre.showFragment(frgProgressBar);
+        if(frgProgressBar==null) {
+            frgProgressBar = new FrgProgressBar();
+            padre.showFragment(frgProgressBar);
+        }
     }
 
     @Override
@@ -70,8 +75,10 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     {
         //la tarea en segundo plano ya ha terminado. Ocultamos el progreso.
         try {
-            if (frgProgressBar != null)
+            if (frgProgressBar != null && closeFrgProgressBar) {
                 frgProgressBar.dismiss();
+                frgProgressBar = null;
+            }
         }
         catch (Exception e){
             e.printStackTrace();

@@ -19,9 +19,11 @@ import conexion.IConexionDAO.ObjetosCombo;
 import librerias.ActivityGeneric;
 import modelo.Ciudad;
 import modelo.Estado;
+import modelo.MarcaVehiculo;
 import servicio.AbstractAsyncTask.IComunicatorBackgroundTask;
 import servicio.ServiceCiudad;
 import servicio.ServiceEstado;
+import servicio.ServiceMarcaVehiculo;
 
 
 public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnItemSelectedListener{
@@ -31,10 +33,12 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     //Servicios
     private ServiceEstado serviceEstado;
     private ServiceCiudad serviceCiudad;
+    private ServiceMarcaVehiculo serviceMarcaVehiculo;
 
     //GUI
     private Spinner spnFRQTipoPersona;
     private Spinner spnFRQEstado;
+    private Spinner spnFRQMarca;
     private Button btnFRQSiguiente;
 
     //Fragmentos
@@ -43,6 +47,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     //Modelos
     private List<Estado> estados;
     private List<Ciudad> ciudades;
+    private List<MarcaVehiculo> marcasVehiculo;
 
     private Estado estado;
 
@@ -54,8 +59,10 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        serviceEstado = new ServiceEstado((IComunicatorBackgroundTask) listener);
+        serviceEstado = new ServiceEstado((IComunicatorBackgroundTask) listener, false);
         serviceEstado.execute(1, R.id.spnFRQEstado);
+        serviceMarcaVehiculo = new ServiceMarcaVehiculo((IComunicatorBackgroundTask) listener, true);
+        serviceMarcaVehiculo.execute(1, R.id.spnFRQMarca);
     }
 
     @Override
@@ -78,7 +85,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             case R.id.spnFRQEstado: {
                 params = new HashMap<String, Object>();
                 params.put("idEstado", String.valueOf(item.getId())); //De cargarse la variable estado
-                serviceCiudad = new ServiceCiudad((IComunicatorBackgroundTask) listener);
+                serviceCiudad = new ServiceCiudad((IComunicatorBackgroundTask) listener, true);
                 serviceCiudad.execute(1, R.id.spnFRQCiudad, params);
             } break;
         }
@@ -94,6 +101,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     protected void setListener(View view) {
         spnFRQTipoPersona = (Spinner) view.findViewById(R.id.spnFRQTipoPersona);
         spnFRQEstado = (Spinner) view.findViewById(R.id.spnFRQEstado);
+        spnFRQMarca = (Spinner) view.findViewById(R.id.spnFRQMarca);
         btnFRQSiguiente = (Button) view.findViewById(R.id.btnFRQSiguiente);
 
         ActivityGeneric.cargarCombo(R.id.spnFRQTipoPersona, view, llenarTiposPersona());
@@ -123,6 +131,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         switch (idView){
             case R.id.spnFRQEstado: cargarListaEstado(result); break;
             case R.id.spnFRQCiudad: cargarListaCiudades(result); break;
+            case R.id.spnFRQMarca: cargarListaMarcaVehiculos(result); break;
             default: break;
         }
     }
@@ -146,6 +155,16 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             ciudadesCombo.add(new ObjetosCombo(ciudad.getIdCiudad(), ciudad.getNombre()));
 
         ActivityGeneric.cargarCombo(R.id.spnFRQCiudad, getView(), ciudadesCombo);
+    }
+
+    private void cargarListaMarcaVehiculos(Map<String, Object> result){
+        marcasVehiculo = (List<MarcaVehiculo>) result.get("marcas");
+        Vector<ObjetosCombo> marcasVehiculosCombo = new Vector<ObjetosCombo>();
+
+        for(MarcaVehiculo marca : marcasVehiculo)
+            marcasVehiculosCombo.add(new ObjetosCombo(marca.getIdMarcaVehiculo(), marca.getNombre()));
+
+        ActivityGeneric.cargarCombo(R.id.spnFRQMarca, getView(), marcasVehiculosCombo);
     }
 
 }

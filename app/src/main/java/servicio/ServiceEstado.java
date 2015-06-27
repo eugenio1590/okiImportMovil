@@ -12,8 +12,8 @@ public final class ServiceEstado extends AbstractAsyncTask {
      *
      * @param padre : Activity que instancio el BackgroundTask
      */
-    public ServiceEstado(IComunicatorBackgroundTask padre) {
-        super(padre, Estado.class);
+    public ServiceEstado(IComunicatorBackgroundTask padre, boolean closeFrgProgressBar) {
+        super(padre, Estado.class, closeFrgProgressBar);
     }
 
     /**METODOS OVERRIDE*/

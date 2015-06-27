@@ -13,8 +13,8 @@ public final class ServiceCiudad extends AbstractAsyncTask {
      *
      * @param padre : Activity que instancio el BackgroundTask
      */
-    public ServiceCiudad(IComunicatorBackgroundTask padre) {
-        super(padre, Ciudad.class);
+    public ServiceCiudad(IComunicatorBackgroundTask padre, boolean closeFrgProgressBar) {
+        super(padre, Ciudad.class, closeFrgProgressBar);
     }
 
     @Override
