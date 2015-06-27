@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public enum EFrgTitulos {
 
     FRG_REGISTRAR_REQUERIMIENTO("Registrar Requerimiento"),
-    FRG_VEFIRICAR_REQUERIMIENTO("Verificar Requerimiento");
+    FRG_VEFIRICAR_REQUERIMIENTO("Verificar Requerimiento"),
+    FRG_PRUEBA("Fragmemt");
 
     private String value;
 
@@ -23,6 +24,7 @@ public enum EFrgTitulos {
         ArrayList<String> titulos = new  ArrayList<String>();
         titulos.add(FRG_REGISTRAR_REQUERIMIENTO.getValue());
         titulos.add(FRG_VEFIRICAR_REQUERIMIENTO.getValue());
+        titulos.add(FRG_PRUEBA.getValue());
         return titulos;
     }
 }

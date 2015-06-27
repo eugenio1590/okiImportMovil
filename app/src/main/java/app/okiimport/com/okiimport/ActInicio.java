@@ -36,6 +36,7 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
         switch(position){
             case 1: return new FrgRegistrarRequerimiento();
             case 2: return new FrgVerificarRequerimiento();
+            case 3: return new FrgPrueba();
 
             default: return null;
         }

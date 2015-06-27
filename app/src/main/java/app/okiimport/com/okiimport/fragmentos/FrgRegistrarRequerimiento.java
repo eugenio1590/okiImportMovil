@@ -65,7 +65,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         switch (v.getId()){
             case R.id.btnFRQSiguiente : {
                 frgProgressBar = new FrgProgressBar();
-                ((OnFragmentInteractionListener) listener).onShowFragment(frgProgressBar);
+                ((OnFragmentInteractionListener) getActivity()).onShowFragment(frgProgressBar);
             }; break;
 
             default:break;
