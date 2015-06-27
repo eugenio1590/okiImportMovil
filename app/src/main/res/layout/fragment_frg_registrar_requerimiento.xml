@@ -112,22 +112,23 @@
                     android:text="Estado *" />
 
                 <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:id="@+id/spnFRQEstado"
-                    android:spinnerMode="dialog" />
+                    android:spinnerMode="dialog"
+                    android:background="@android:drawable/btn_dropdown" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ciudad *"
-                    android:id="@+id/textView2" />
+                    android:text="Ciudad *" />
 
                 <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:id="@+id/spnFRQCiudad"
-                    android:spinnerMode="dialog" />
+                    android:spinnerMode="dialog"
+                    android:background="@android:drawable/btn_dropdown"/>
 
             </LinearLayout>
 
@@ -161,19 +162,22 @@
                     android:text="Marca *" />
 
                 <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spnFRQMarca" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spnFRQMarca"
+                    android:spinnerMode="dialog"
+                    android:background="@android:drawable/btn_dropdown"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Modelo *" />
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spnFRQModelo" />
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/txtFRQModelo"
+                    android:textColor="@color/Negro"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -185,7 +189,8 @@
                     android:layout_height="fill_parent"
                     android:inputType="date"
                     android:ems="10"
-                    android:id="@+id/txtFRQAnno" />
+                    android:id="@+id/txtFRQAnno"
+                    android:textColor="@color/Negro"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -195,9 +200,8 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:inputType="number"
-                    android:ems="10"
-                    android:id="@+id/txtFRQSerial" />
+                    android:id="@+id/txtFRQSerial"
+                    android:textColor="@color/Negro"/>
 
             </LinearLayout>
 

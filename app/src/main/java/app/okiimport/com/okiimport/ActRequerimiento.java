@@ -130,6 +130,6 @@ public abstract class ActRequerimiento extends ActionBarActivity
     @Override
     public void onShowFragment(Fragmento fragmento) {
         FragmentManager fm = getSupportFragmentManager();
-        fragmento.show(fm, "fragment");
+        fragmento.show(fm, "fragment"+Math.random());
     }
 }
