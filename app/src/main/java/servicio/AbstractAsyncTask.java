@@ -1,6 +1,7 @@
 package servicio;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,9 +64,15 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     protected Map<String, Object> doInBackground(Void... params) {
         Map<String, Object> result = new HashMap<String, Object>();
         if(id!=null && padre!=null) {
-           padre.executePreInBackground(this.id);
-           result = doInBackground(this.id, this.params);
-           padre.executePostInBackground(this.id);
+            try {
+                padre.executePreInBackground(this.id);
+                result = doInBackground(this.id, this.params);
+                padre.executePostInBackground(this.id);
+            }
+            catch (Exception e)
+            {
+                Log.e("Error in Service", e.toString());
+            }
         }
         return result;
     }
@@ -81,7 +88,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
             }
         }
         catch (Exception e){
-            e.printStackTrace();
+            Log.e("Error in ProgressBar", e.toString());
         }
 
         if(padre!=null) {
