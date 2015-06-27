@@ -1,7 +1,7 @@
 package app.okiimport.com.okiimport;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import app.okiimport.com.okiimport.fragmentos.*;
@@ -75,7 +75,8 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     }
 
     @Override
-    public void showFragment(Fragment fragment) {
-
+    public void showFragment(Fragmento fragmento) {
+        FragmentManager fm = getSupportFragmentManager();
+        fragmento.show(fm, "fragment_"+Math.random());
     }
 }

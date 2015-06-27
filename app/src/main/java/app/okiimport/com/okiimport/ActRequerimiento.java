@@ -10,12 +10,13 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import app.okiimport.com.okiimport.fragmentos.FrgRequerimiento;
 import librerias.componentes.Fragmento;
 
+import static app.okiimport.com.okiimport.NavigationDrawerFragment.*;
+import static app.okiimport.com.okiimport.fragmentos.FrgRequerimiento.*;
+
 public abstract class ActRequerimiento extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-                    FrgRequerimiento.OnFragmentInteractionListener {
+        implements NavigationDrawerCallbacks, OnFragmentInteractionListener {
 
     protected Menu menu;
     /**
@@ -130,6 +131,6 @@ public abstract class ActRequerimiento extends ActionBarActivity
     @Override
     public void onShowFragment(Fragmento fragmento) {
         FragmentManager fm = getSupportFragmentManager();
-        fragmento.show(fm, "fragment"+Math.random());
+        fragmento.show(fm, "fragment_"+Math.random());
     }
 }

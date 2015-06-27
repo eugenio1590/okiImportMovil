@@ -1,6 +1,5 @@
 package app.okiimport.com.okiimport.fragmentos;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,7 +48,6 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     public FrgRegistrarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_registrar_requerimiento);
-        ActivityGeneric.imprimirConsola("Paso", "Consola");
     }
 
     /**EVENTOS*/
@@ -76,7 +74,6 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ObjetosCombo item = (ObjetosCombo) ((Spinner) parent).getItemAtPosition(position);
         Map<String, Object> params = null;
-        ActivityGeneric.imprimirConsola("Paso Listener", ""+(view.getId()==R.id.spnFRQCiudad));
         switch (((Spinner) parent).getId()){
             case R.id.spnFRQEstado: {
                 params = new HashMap<String, Object>();

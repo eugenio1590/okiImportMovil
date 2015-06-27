@@ -13,7 +13,7 @@ import librerias.componentes.Fragmento;
 //Clase base para los fragmentos del Navigation
 public abstract class FrgRequerimiento extends Fragmento {
 
-    private OnFragmentInteractionListener mListener;
+    protected OnFragmentInteractionListener mListener;
 
     protected static Vector<IConexionDAO.ObjetosCombo> tiposPersona;
 

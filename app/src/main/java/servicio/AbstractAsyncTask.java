@@ -1,6 +1,5 @@
 package servicio;
 
-import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -8,7 +7,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONObject;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +17,7 @@ import java.util.Map;
 
 import app.okiimport.com.okiimport.fragmentos.configuracion.FrgProgressBar;
 import librerias.ActivityGeneric;
+import librerias.componentes.Fragmento;
 
 public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<String, Object>> {
 
@@ -156,6 +155,6 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         String executePreInBackground(Integer id);
         String executePostInBackground(Integer id);
         void executeOnPostExecute(Map<String, Object> result);
-        void showFragment(Fragment fragment);
+        void showFragment(Fragmento fragmento);
     }
 }
