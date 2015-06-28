@@ -40,7 +40,7 @@ public class ViewValidator extends LinearLayout {
     private void configurar(Context contex) {
         float density = contex.getResources().getDisplayMetrics().density;
 
-        this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        this.setLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         this.setPadding(0,0,0, (int)(10*density));
         this.setOrientation(HORIZONTAL);
         this.setVisibility(INVISIBLE);
@@ -59,12 +59,41 @@ public class ViewValidator extends LinearLayout {
         this.addView(imgEror);
     }
 
+    /**GETTERS Y SETTERS*/
     public TextView getTxtError() {
         return txtError;
     }
 
     public ImageView getImgEror() {
         return imgEror;
+    }
+
+    public int getLWidth(){
+        return this.getLayoutParams().width;
+    }
+
+    public int getLHeigth(){
+        return this.getLayoutParams().height;
+    }
+
+    public void setLWidth(int width){
+        this.setLayoutParams(new LayoutParams(width, getLHeigth(), new Float(0.9)));
+    }
+
+    public void setLHeight(int height){
+        this.setLayoutParams(new LayoutParams(getLWidth(), height, new Float(0.9)));
+    }
+
+    public void setLayoutParams(int width, int height){
+        this.setLayoutParams(new LayoutParams(width, height, new Float(0.9)));
+    }
+
+    public void setImageResource(int imageResource){
+        getImgEror().setImageResource(imageResource);
+    }
+
+    public void setImageBackgroundColor(int imageBackgroundColor){
+        getImgEror().setBackgroundColor(imageBackgroundColor);
     }
 
     public static abstract class TxtValidator implements TextWatcher{

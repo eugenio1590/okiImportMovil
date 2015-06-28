@@ -2,6 +2,7 @@ package librerias;
 
 import java.lang.reflect.Array;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +40,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.internal.util.Predicate;
 
 public abstract class ActivityGeneric extends Activity implements IFuncionesGenerales, OnClickListener{
 	
@@ -188,6 +191,23 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 
 		return concatenado;
 	}
+
+    //6. Permitira encontrar un objeto con el predicado pasado como parametro en la list
+    public static  <T> T findObject(Predicate<T> predicate, List<T> list){
+        if(list!=null && !list.isEmpty()){
+            if(predicate!=null){
+                for(T object : list){
+                    if(predicate.apply(object))
+                        return object;
+                }
+            }
+            else
+                Log.e("Error", "Condicion no Valida");
+        }
+        else
+            Log.e("Error", "Error en lista al buscar.");
+        return null;
+    }
 
 	/**ACTIVITY*/
 	//1. Permitira Mostrar un mensaje en la pantalla
