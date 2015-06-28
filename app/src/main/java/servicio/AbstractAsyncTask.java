@@ -8,6 +8,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -112,6 +117,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     protected abstract Map<String, Object> doInBackground(Integer id, Map<String, Object> params);
 
     /**METODOS PROPIOS DE LA CLASE*/
+    //GET
     protected <Y> Y getToJSON(String ruta, String params, Class<?> mapped){
         params = (params==null) ? "" : params;
         RestTemplate restTemplate = new RestTemplate();
@@ -122,21 +128,35 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
             return (Y) restTemplate.getForObject(URL+ruta+"?"+params, mapped);
     }
 
+    //POST
+    protected <Y, X> Y postToJSON(String ruta, String params, Class mapped, X data){
+        params = (params==null) ? "" : params;
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(new MediaType("application","json"));
+
+        HttpEntity<X> requestEntity = new HttpEntity<X>(data, requestHeaders);
+        ResponseEntity<X> responseEntity = restTemplate.exchange(URL+ruta+"?"+params, HttpMethod.POST, requestEntity, mapped);
+        return (Y) responseEntity.getBody();
+    }
+
     protected  <Y> List<Y> getToJSONList(Class<Y> modelo, List<Map<String, Object>> mapModels){
         List<Y> modelos = new ArrayList<Y>();
-        Gson gson = new GsonBuilder().create();
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = null;
-        Y modeloInstance = null;
         if(mapModels!=null) {
-            for (Map<String, Object> mapModel : mapModels) {
-                ActivityGeneric.imprimirConsola("Data: ", gson.toJson(mapModel));
-                jsonObject = jsonParser.parse(gson.toJson(mapModel)).getAsJsonObject();
-                modeloInstance = gson.fromJson(jsonObject, modelo);
-                modelos.add(modeloInstance);
-            }
+            for (Map<String, Object> mapModel : mapModels)
+                modelos.add(getToJSONObject(modelo, mapModel));
         }
         return modelos;
+    }
+
+    protected <Y> Y getToJSONObject(Class<Y> modelo, Map<String, Object> mapModel){
+        JsonParser jsonParser = new JsonParser();
+        Gson gson = new GsonBuilder().create();
+        ActivityGeneric.imprimirConsola("Data: ", gson.toJson(mapModel));
+        JsonObject jsonObject = jsonParser.parse(gson.toJson(mapModel)).getAsJsonObject();
+        return gson.fromJson(jsonObject, modelo);
     }
 
     /**GETTERS Y SETTERS*/

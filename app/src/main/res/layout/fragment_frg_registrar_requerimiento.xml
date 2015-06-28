@@ -190,7 +190,13 @@
                     android:inputType="date"
                     android:ems="10"
                     android:id="@+id/txtFRQAnno"
-                    android:textColor="@color/Negro"/>
+                    android:textColor="@color/Negro" />
+
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    class="librerias.componentes.ViewValidator"
+                    android:id="@+id/vvFRQAnno" />
 
                 <TextView
                     android:layout_width="wrap_content"
