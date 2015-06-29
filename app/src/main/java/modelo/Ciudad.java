@@ -20,8 +20,7 @@ public class Ciudad implements Serializable {
 	private Estado estado;
 
 	//bi-directional one-to-many association to Persona
-	//@OneToMany(mappedBy="ciudad", cascade=CascadeType.ALL)
-	//private List<Persona> personas;
+	private List<Persona> personas;
 
 	public Ciudad() {
 	}
@@ -55,7 +54,7 @@ public class Ciudad implements Serializable {
 		this.estado = estado;
 	}
 
-	/*public List<Persona> getPersonas() {
+	public List<Persona> getPersonas() {
 		return personas;
 	}
 
@@ -75,5 +74,5 @@ public class Ciudad implements Serializable {
 		persona.setCiudad(null);
 
 		return persona;
-	}*/
+	}
 }

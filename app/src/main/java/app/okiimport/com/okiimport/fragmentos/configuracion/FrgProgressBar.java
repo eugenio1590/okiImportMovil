@@ -27,6 +27,11 @@ public class FrgProgressBar extends Fragmento {
     }
 
     @Override
+    protected void setValidator(View view) {
+
+    }
+
+    @Override
     protected void cargarCombo(int id, View view) {
 
     }

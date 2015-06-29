@@ -61,6 +61,21 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 		campo_editable.setText("");
 	}
 
+    @Override
+    public <T> T getGeneric(int id, Class<T> tClass){
+        View view = getComponente(id);
+        if(view instanceof TextView) {
+            try {
+                return tClass.cast(((TextView) view).getText().toString());
+            }
+            catch (Exception e){
+                return null;
+            }
+        }
+
+        return null;
+    }
+
 	@Override
 	public void mostrarMensaje(String mensaje) {
 		// TODO Auto-generated method stub
@@ -96,6 +111,7 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
         super.onActivityCreated(savedInstanceState);
         View view=getView();
         setListener(view);
+        setValidator(view);
         listener = (IComunicacionListener) getActivity();
     }
 
@@ -121,7 +137,7 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 
 	/**METODOS PROPIOS DE LA CLASE*/
 	public View getComponente(int id){
-		return ((FragmentoActivity) getActivity()).getComponente(id);
+		return getView().findViewById(id);
 	}
 	
 	protected boolean comboSeleccionado(int id){
@@ -129,17 +145,21 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 	}
 	
 	//1. Creara el encabezado de las columnas de acuerdo a un color especifico
-	protected void crearCeldaEncabezado(int color) {
+	protected TableRow crearCeldaEncabezado(int color,int gravity) {
 		if(tabla!=null){
 			for (int i = 0; i < encabezado.length; i++) {
-				insertarCampoLabel(encabezado[i], 0); //El cero Significa la fila unica que se creara
+				insertarCampoLabel(encabezado[i], 0, gravity); //El cero Significa la fila unica que se creara
 				label.setTextColor(color);
 			}
 		}
+        else
+            fila = null;
+
+        return fila;
 	}
 		
 	//2. Insertara un campo TextView en la columna "index" de la tabla referenciada
-	protected void insertarCampoLabel(String valor, int index) {
+	protected void insertarCampoLabel(String valor, int index, int gravity) {
 		if(tabla!=null){
 
 			label = new TextView(this.getActivity());
@@ -149,7 +169,7 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 			label.setTypeface(null, Typeface.BOLD);
 			label.setText(valor);
 
-			insertarObjeto(label, index, Gravity.LEFT);
+			insertarObjeto(label, index, gravity);
 		}
 	}
 
@@ -201,7 +221,7 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 	}
 
 	//6. Insertara una fila completa en la tabla referenciada mediante un arreglo de datos
-	protected void  insertarFila(String[] valores, boolean editable, int index, int tipo_acceso){
+	protected void  insertarFila(String[] valores, boolean editable, int index, int tipo_acceso, int gravity){
 
 		if(tabla!=null){
 			int fila = 0;
@@ -213,7 +233,7 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 
 			for(int i=0; i<valores.length; i++){
 				if(!editable)
-					insertarCampoLabel(valores[i], fila);
+					insertarCampoLabel(valores[i], fila, gravity);
 				else
 					insertarCampoEditable(valores[i], fila, tipo_acceso);
 			}
@@ -248,7 +268,13 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 			this.tabla.removeAllViews();
 	}
 
-
+    //9. Borrara una fila de la tabla por su index
+    protected void borrarFila(int index){
+        if(this.tabla!=null){
+            if(index<this.tabla.getChildCount())
+                this.tabla.removeViewAt(index);
+        }
+    }
 
 	/**INTERFAZ PARA LA COMUNICACION CON EL ACTIVITY DEL FRAGMENTO*/
 	protected IComunicacionListener getListener(){
@@ -257,11 +283,12 @@ public abstract class Fragmento extends DialogFragment implements IFuncionesForm
 
 	//Metodos Requeridos
 	protected abstract void setListener(View view);
+    protected abstract void setValidator(View view);
 	protected abstract void cargarCombo(int id, View view);
 	
 	//5. Insertara algun dato para pasarlo a otro Activity
-		@Override
-		public void redireccionarValores(Context context ,Class<?> clase, Vector<String[]> valores, boolean withFinish){
-			
-		}
+	@Override
+	public void redireccionarValores(Context context ,Class<?> clase, Vector<String[]> valores, boolean withFinish){
+
+	}
 }

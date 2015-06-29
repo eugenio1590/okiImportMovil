@@ -17,6 +17,8 @@ public class ViewValidator extends LinearLayout {
 
     private ImageView imgEror;
 
+    private float density;
+
     public ViewValidator(Context context) {
         super(context);
         configurar(context);
@@ -38,7 +40,7 @@ public class ViewValidator extends LinearLayout {
     }
 
     private void configurar(Context contex) {
-        float density = contex.getResources().getDisplayMetrics().density;
+        density = contex.getResources().getDisplayMetrics().density;
 
         this.setLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         this.setPadding(0,0,0, (int)(10*density));
@@ -77,15 +79,15 @@ public class ViewValidator extends LinearLayout {
     }
 
     public void setLWidth(int width){
-        this.setLayoutParams(new LayoutParams(width, getLHeigth(), new Float(0.9)));
+        this.setLayoutParams(new LayoutParams((int) density*width, getLHeigth(), new Float(0.9)));
     }
 
     public void setLHeight(int height){
-        this.setLayoutParams(new LayoutParams(getLWidth(), height, new Float(0.9)));
+        this.setLayoutParams(new LayoutParams(getLWidth(), (int) density*height, new Float(0.9)));
     }
 
     public void setLayoutParams(int width, int height){
-        this.setLayoutParams(new LayoutParams(width, height, new Float(0.9)));
+        this.setLayoutParams(new LayoutParams((int) density*width, (int) density*height, new Float(0.9)));
     }
 
     public void setImageResource(int imageResource){

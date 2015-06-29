@@ -3,6 +3,7 @@ package librerias;
 import java.util.Vector;
 
 import android.content.Context;
+import android.view.View;
 
 public interface IFuncionesFormularios{
 	/**Interface requerida para la implementacion 
@@ -10,6 +11,7 @@ public interface IFuncionesFormularios{
 	 * */
 	//1. Metodos Abstractos Generales
 	void limpiarGeneric(int id);
+    <T> T getGeneric(int id, Class<T> tClass);
 	boolean campoVacio(int id);
 	void mostrarMensaje(String mensaje);
 	

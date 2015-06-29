@@ -1,12 +1,26 @@
 package app.okiimport.com.okiimport.fragmentos;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import com.android.internal.util.Predicate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +31,19 @@ import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import app.okiimport.com.okiimport.fragmentos.configuracion.FrgProgressBar;
 import conexion.IConexionDAO.ObjetosCombo;
 import librerias.ActivityGeneric;
+import librerias.componentes.Calendario;
+import librerias.componentes.ViewValidator;
 import modelo.Ciudad;
+import modelo.Cliente;
 import modelo.Estado;
 import modelo.MarcaVehiculo;
+import modelo.Requerimiento;
 import servicio.AbstractAsyncTask.IComunicatorBackgroundTask;
 import servicio.ServiceCiudad;
+import servicio.ServiceCliente;
 import servicio.ServiceEstado;
 import servicio.ServiceMarcaVehiculo;
+import servicio.ServiceRequerimiento;
 
 
 public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnItemSelectedListener{
@@ -34,25 +54,39 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     private ServiceEstado serviceEstado;
     private ServiceCiudad serviceCiudad;
     private ServiceMarcaVehiculo serviceMarcaVehiculo;
+    private ServiceRequerimiento serviceRequerimiento;
 
     //GUI
     private Spinner spnFRQTipoPersona;
     private Spinner spnFRQEstado;
+    private Spinner spnFRQCiudad;
     private Spinner spnFRQMarca;
-    private Button btnFRQSiguiente;
+
+    private Button btnFRQAgregar;
+    private Button btnFRQEliminar;
+    private Button btnFRQLimpiar;
+    private Button btnFRQEnviar;
+
+    private EditText txtFRQAnno;
+
+    private TableLayout tblFRQRepuestos;
 
     //Fragmentos
     private FrgProgressBar frgProgressBar;
 
     //Modelos
+    private List<CheckBox> checkRemover;
     private List<Estado> estados;
     private List<Ciudad> ciudades;
     private List<MarcaVehiculo> marcasVehiculo;
 
     private Estado estado;
+    private Ciudad ciudad;
+    private MarcaVehiculo marcaVehiculo;
 
     public FrgRegistrarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_registrar_requerimiento);
+        checkRemover = new ArrayList<CheckBox>();
     }
 
     /**EVENTOS*/
@@ -67,27 +101,76 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btnFRQSiguiente : {
-                frgProgressBar = new FrgProgressBar();
-                ((OnFragmentInteractionListener) listener).onShowFragment(frgProgressBar);
-            }; break;
+        ActivityGeneric.imprimirConsola("Clase", v.getClass().getCanonicalName());
+        if(v instanceof CheckBox){
+            CheckBox checkRepuesto = (CheckBox) v;
+            ActivityGeneric.imprimirConsola("CHECK",  "Id:"+checkRepuesto.getId());
 
-            default:break;
+            if(checkRepuesto.isChecked())
+                checkRemover.add(checkRepuesto);
+            else
+                checkRemover.remove(checkRepuesto);
+        }
+        else if(v instanceof Button) {
+            switch (v.getId()) {
+                case R.id.btnFRQAgregar: {
+                    int nroFila = tblFRQRepuestos.getChildCount();
+                    if(nroFila<11)
+                        agregarRepuesto(false, nroFila);
+                }; break;
+
+                case R.id.btnFRQEliminar: eliminarRepuestos(); break;
+
+                case R.id.btnFRQLimpiar: limpiar(); break;
+
+                case R.id.btnFRQEnviar: {
+                    if(validarFormulario())
+                        registrarCliente();
+                }; break;
+                default: break;
+            }
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         ObjetosCombo item = (ObjetosCombo) ((Spinner) parent).getItemAtPosition(position);
+        String idObjeto = String.valueOf(item.getId());
         Map<String, Object> params = null;
         switch (((Spinner) parent).getId()){
             case R.id.spnFRQEstado: {
+
+                final int idEstado = Integer.parseInt(idObjeto);
+                estado = ActivityGeneric.findObject(new Predicate<Estado>() {
+                    @Override
+                    public boolean apply(Estado estado) {
+                        return (estado.getIdEstado()==idEstado);
+                    }
+                }, estados);
                 params = new HashMap<String, Object>();
-                params.put("idEstado", String.valueOf(item.getId())); //De cargarse la variable estado
+                params.put("idEstado", idObjeto);
                 serviceCiudad = new ServiceCiudad((IComunicatorBackgroundTask) listener, true);
                 serviceCiudad.execute(1, R.id.spnFRQCiudad, params);
-            } break;
+            }; break;
+            case R.id.spnFRQCiudad: {
+                final int idCiudad = Integer.parseInt(idObjeto);
+                ciudad = ActivityGeneric.findObject(new Predicate<Ciudad>() {
+                    @Override
+                    public boolean apply(Ciudad ciudad) {
+                        return (ciudad.getIdCiudad()==idCiudad);
+                    }
+                }, ciudades);
+            }; break;
+            case R.id.spnFRQMarca: {
+                final int idMarcaVehiculo = Integer.parseInt(idObjeto);
+                marcaVehiculo = ActivityGeneric.findObject(new Predicate<MarcaVehiculo>() {
+                    @Override
+                    public boolean apply(MarcaVehiculo marcaVehiculo) {
+                        return (marcaVehiculo.getIdMarcaVehiculo()==idMarcaVehiculo);
+                    }
+                }, marcasVehiculo);
+            }; break;
+            default: break;
         }
     }
 
@@ -101,37 +184,94 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     protected void setListener(View view) {
         spnFRQTipoPersona = (Spinner) view.findViewById(R.id.spnFRQTipoPersona);
         spnFRQEstado = (Spinner) view.findViewById(R.id.spnFRQEstado);
+        spnFRQCiudad = (Spinner) view.findViewById(R.id.spnFRQCiudad);
         spnFRQMarca = (Spinner) view.findViewById(R.id.spnFRQMarca);
-        btnFRQSiguiente = (Button) view.findViewById(R.id.btnFRQSiguiente);
 
-        ActivityGeneric.cargarCombo(R.id.spnFRQTipoPersona, view, llenarTiposPersona());
+        btnFRQAgregar = (Button) view.findViewById(R.id.btnFRQAgregar);
+        btnFRQEliminar = (Button) view.findViewById(R.id.btnFRQEliminar);
+        btnFRQLimpiar = (Button) view.findViewById(R.id.btnFRQLimpiar);
+        btnFRQEnviar = (Button) view.findViewById(R.id.btnFRQEnviar);
+
+        txtFRQAnno = (EditText) view.findViewById(R.id.txtFRQAnno);
+
+        tblFRQRepuestos = (TableLayout) view.findViewById(R.id.tblFRQRepuestos);
+
+        cargarCombo(R.id.spnFRQTipoPersona, view);
 
         spnFRQEstado.setOnItemSelectedListener(this);
-        btnFRQSiguiente.setOnClickListener(this);
+        spnFRQCiudad.setOnItemSelectedListener(this);
+        spnFRQMarca.setOnItemSelectedListener(this);
+
+        btnFRQAgregar.setOnClickListener(this);
+        //btnFRQEliminar.setOnClickListener(this); Revisar
+        btnFRQLimpiar.setOnClickListener(this);
+        btnFRQEnviar.setOnClickListener(this);
+
+        agregarRepuesto(true, 1);
+    }
+
+    @Override
+    protected void setValidator(View view) {
+        ViewValidator vvFRQAnno = (ViewValidator) view.findViewById(R.id.vvFRQAnno);
+
+        vvFRQAnno.setImageResource(R.drawable.warning);
+        vvFRQAnno.setImageBackgroundColor(Color.TRANSPARENT);
+
+        txtFRQAnno.addTextChangedListener(new ViewValidator.TxtValidator(txtFRQAnno, vvFRQAnno, R.drawable.edittext_error){
+
+            @Override
+            public boolean validateAfterChange(EditText editText, String text) {
+                int annoActual = Calendario.getAnno();
+                if(!text.trim().equalsIgnoreCase("") && Integer.valueOf(text)>annoActual) {
+                    error = "El año ingresado debe ser menor a "+annoActual;
+                    return false;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
     protected void cargarCombo(int id, View view) {
-
+        switch (id){
+            case R.id.spnFRQTipoPersona: ActivityGeneric.cargarCombo(R.id.spnFRQTipoPersona, view, llenarTiposPersona()); break;
+            default: break;
+        }
     }
 
     @Override
     public boolean validarFormulario() {
-        return false;
+        return true;
     }
 
     @Override
     public void limpiar() {
+        limpiarGeneric(R.id.txtFRQCedula);
+        limpiarGeneric(R.id.txtFRQNombre);
+        limpiarGeneric(R.id.txtFRQApellido);
+        limpiarGeneric(R.id.txtFRQTelefono);
+        limpiarGeneric(R.id.txtFRQModelo);
+        limpiarGeneric(R.id.txtFRQAnno);
+        limpiarGeneric(R.id.txtFRQSerial);
 
+        spnFRQTipoPersona.setSelection(0);
+        spnFRQEstado.setSelection(0);
+        spnFRQMarca.setSelection(0);
+        //eliminarRepuestos();
     }
 
     @Override
     public void onViewProcesar(Integer idView, Map<String, Object> result){
-        ActivityGeneric.imprimirConsola("ID VIEW:", ""+idView);
         switch (idView){
             case R.id.spnFRQEstado: cargarListaEstado(result); break;
             case R.id.spnFRQCiudad: cargarListaCiudades(result); break;
             case R.id.spnFRQMarca: cargarListaMarcaVehiculos(result); break;
+            case R.id.btnFRQEnviar: {
+               //Esta dando problemas en el result
+                mostrarMensaje("Requerimiento Registrado");
+                limpiar();
+            }; break;
+            case 1: registrarRequerimiento((Cliente) result.get("cliente")); break;
             default: break;
         }
     }
@@ -139,32 +279,122 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     /**METODOS PROPIOS DE LA CLASE*/
     private void cargarListaEstado(Map<String, Object> result){
         estados = (List<Estado>) result.get("estados");
-        Vector<ObjetosCombo> estadosCombo = new Vector<ObjetosCombo>();
+        if(estados!=null) {
+            Vector<ObjetosCombo> estadosCombo = new Vector<ObjetosCombo>();
 
-        for(Estado estado : estados)
-            estadosCombo.add(new ObjetosCombo(estado.getIdEstado(), estado.getNombre()));
+            for (Estado estado : estados)
+                estadosCombo.add(new ObjetosCombo(estado.getIdEstado(), estado.getNombre()));
 
-        ActivityGeneric.cargarCombo(R.id.spnFRQEstado, getView(), estadosCombo);
+            ActivityGeneric.cargarCombo(R.id.spnFRQEstado, getView(), estadosCombo);
+        }
     }
 
     private void cargarListaCiudades(Map<String, Object> result){
         ciudades = (List<Ciudad>) result.get("ciudades");
-        Vector<ObjetosCombo> ciudadesCombo = new Vector<ObjetosCombo>();
+        if(ciudades!=null) {
+            Vector<ObjetosCombo> ciudadesCombo = new Vector<ObjetosCombo>();
 
-        for(Ciudad ciudad : ciudades)
-            ciudadesCombo.add(new ObjetosCombo(ciudad.getIdCiudad(), ciudad.getNombre()));
+            for (Ciudad ciudad : ciudades)
+                ciudadesCombo.add(new ObjetosCombo(ciudad.getIdCiudad(), ciudad.getNombre()));
 
-        ActivityGeneric.cargarCombo(R.id.spnFRQCiudad, getView(), ciudadesCombo);
+            ActivityGeneric.cargarCombo(R.id.spnFRQCiudad, getView(), ciudadesCombo);
+        }
     }
 
     private void cargarListaMarcaVehiculos(Map<String, Object> result){
         marcasVehiculo = (List<MarcaVehiculo>) result.get("marcas");
-        Vector<ObjetosCombo> marcasVehiculosCombo = new Vector<ObjetosCombo>();
+        if(marcasVehiculo!=null) {
+            Vector<ObjetosCombo> marcasVehiculosCombo = new Vector<ObjetosCombo>();
 
-        for(MarcaVehiculo marca : marcasVehiculo)
-            marcasVehiculosCombo.add(new ObjetosCombo(marca.getIdMarcaVehiculo(), marca.getNombre()));
+            for (MarcaVehiculo marca : marcasVehiculo)
+                marcasVehiculosCombo.add(new ObjetosCombo(marca.getIdMarcaVehiculo(), marca.getNombre()));
 
-        ActivityGeneric.cargarCombo(R.id.spnFRQMarca, getView(), marcasVehiculosCombo);
+            ActivityGeneric.cargarCombo(R.id.spnFRQMarca, getView(), marcasVehiculosCombo);
+        }
     }
 
+    private void agregarRepuesto(boolean withEncabezado, int nroFila){
+        super.tabla = this.tblFRQRepuestos;
+
+        if(withEncabezado) {
+            this.borrarTabla();
+            this.encabezado = new String[]{"", "  ", "Descripcion *", "     ", "Cantidad *"};
+            TableRow filaEncabezado=this.crearCeldaEncabezado(Color.BLACK, Gravity.LEFT);
+            filaEncabezado.setBackgroundResource(R.drawable.rectangle_head_table); //Falta Personalizar el Head de la Tabla
+        }
+
+        CheckBox chFRQRepuesto = new CheckBox(this.getActivity());
+        chFRQRepuesto.setId(nroFila);
+        chFRQRepuesto.setOnClickListener(this);
+        this.insertarObjeto(chFRQRepuesto, nroFila, Gravity.LEFT);
+
+        TextView space1 = new TextView(this.getActivity());
+        space1.setText("  ");
+        this.insertarObjeto(space1, nroFila, Gravity.LEFT);
+
+        EditText txtFRQDescripcion = new EditText(this.getActivity());
+        txtFRQDescripcion.setTextColor(Color.BLACK);
+        txtFRQDescripcion.setEms(7);
+        this.insertarObjeto(txtFRQDescripcion, nroFila, Gravity.LEFT);
+
+        TextView space2 = new TextView(this.getActivity());
+        space2.setText("     ");
+        this.insertarObjeto(space2, nroFila, Gravity.LEFT);
+
+        EditText nmbFRQCantidad = new EditText(this.getActivity());
+        nmbFRQCantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
+        nmbFRQCantidad.setTextColor(Color.BLACK);
+        this.insertarObjeto(nmbFRQCantidad, nroFila, Gravity.LEFT);
+    }
+
+    private void eliminarRepuestos(){
+        ActivityGeneric.imprimirConsola("ERLIMINAR", "REPUESTOS");
+        this.tabla = tblFRQRepuestos;
+        Collections.sort(checkRemover, new Comparator<CheckBox>() {
+            @Override
+            public int compare(CheckBox checkBox1, CheckBox checkBox2) {
+                return Integer.valueOf(checkBox2.getId()).compareTo(checkBox1.getId());
+            }
+        });
+        for(CheckBox checkBox : checkRemover){
+            this.borrarFila(checkBox.getId());
+        }
+        checkRemover.clear();
+    }
+
+    private void registrarCliente(){
+        Cliente cliente = new Cliente();
+        cliente.setCedula(getGeneric(R.id.txtFRQCedula, String.class));
+        cliente.setNombre(getGeneric(R.id.txtFRQNombre, String.class));
+        cliente.setApellido(getGeneric(R.id.txtFRQApellido, String.class));
+        cliente.setTelefono(getGeneric(R.id.txtFRQTelefono, String.class));
+        ciudad.setEstado(estado);
+        cliente.setCiudad(ciudad);
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cliente", cliente);
+        ServiceCliente serviceCliente = new ServiceCliente((IComunicatorBackgroundTask) listener, false);
+        serviceCliente.execute(1, 1, params);
+    }
+
+    private void registrarRequerimiento(Cliente cliente){
+        /*Cliente cliente = new Cliente();
+        cliente.setCedula(getGeneric(R.id.txtFRQCedula, String.class));
+        cliente.setNombre(getGeneric(R.id.txtFRQNombre, String.class));
+        cliente.setApellido(getGeneric(R.id.txtFRQApellido, String.class));
+        cliente.setTelefono(getGeneric(R.id.txtFRQTelefono, String.class));
+        ciudad.setEstado(estado);
+        cliente.setCiudad(ciudad);*/
+
+        Requerimiento requerimiento = new Requerimiento(cliente);
+        requerimiento.setMarcaVehiculo(marcaVehiculo);
+        requerimiento.setModeloV(getGeneric(R.id.txtFRQModelo, String.class));
+        requerimiento.setAnnoV(getGeneric(R.id.txtFRQAnno, Integer.class));
+        requerimiento.setSerialCarroceriaV(getGeneric(R.id.txtFRQSerial, String.class));
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("requerimiento", requerimiento);
+        serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, true);
+        serviceRequerimiento.execute(1, R.id.btnFRQEnviar, params);
+    }
 }

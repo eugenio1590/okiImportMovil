@@ -33,6 +33,11 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento {
     }
 
     @Override
+    protected void setValidator(View view) {
+
+    }
+
+    @Override
     protected void cargarCombo(int id, View view) {
 
     }

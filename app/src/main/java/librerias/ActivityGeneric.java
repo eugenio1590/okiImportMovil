@@ -242,7 +242,6 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 			this.finish();
 	}
 	
-	
 	//5. Insertara algun dato para pasarlo a otro Activity
 	@Override
 	public void redireccionarValores(Context context ,Class<?> clase, Vector<String[]> valores, boolean withFinish){
@@ -256,7 +255,7 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 			this.finish();
 	}
 	
-	//5. Permitira Validar si un campo editable del formulario esta vacio
+	//6. Permitira Validar si un campo editable del formulario esta vacio
 	@Override
 	public boolean campoVacio(int id){
 		campo_editable = (EditText) findViewById(id);
@@ -266,27 +265,40 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 		return false;
 	}
 	
-	//6. Llenara un edittexto con la informacion pasada como parametro
+	//7. Llenara un edittexto con la informacion pasada como parametro
 	public void llenarEditText(int id, String text)
 	{
 		this.campo_editable=(EditText) findViewById(id);
 		this.campo_editable.setText(text);
 	}
 
-
-	
-	//7. Obtendra el Valor de un edittexto con el id pasado comp parametro
+	//8. Obtendra el Valor de un edittexto con el id pasado comp parametro
 	public String getInfoEditText(int id){
 		this.campo_editable=(EditText) findViewById(id);
 		return this.campo_editable.getText().toString();
 	}
 
-
-    //8. Desabilita el EditText
+    //9. Desabilita el EditText
     public void DesabilitarEditText(int id, boolean bool)
     {
         this.campo_editable=(EditText) findViewById(id);
         this.campo_editable.setEnabled(bool);
+    }
+
+    //10. Permitira obtener el valor de un campo a travez de su id
+    @Override
+    public <T> T getGeneric(int id, Class<T> tClass){
+        View view = findViewById(id);
+        if(view instanceof TextView) {
+            try {
+                return tClass.cast(((TextView) view).getText().toString());
+            }
+            catch (Exception e){
+                return null;
+            }
+        }
+
+        return null;
     }
 	
 	/**TABLAS*/

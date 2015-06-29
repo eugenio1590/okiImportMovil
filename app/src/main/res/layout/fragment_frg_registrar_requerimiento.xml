@@ -212,6 +212,71 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/rectangle_head">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Datos de Repuestos"
+                    android:id="@+id/textView"
+                    android:layout_marginLeft="20px"
+                    android:textColor="@color/Blanco" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/rectangle"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <GridLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <Button
+                        style="@style/BaseButton.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Agregar"
+                        android:id="@+id/btnFRQAgregar"
+                        android:layout_column="9"
+                        android:layout_row="0" />
+
+                    <Button
+                        style="@style/BaseButton.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Eliminar"
+                        android:id="@+id/btnFRQEliminar"
+                        android:layout_column="10"
+                        android:layout_row="0" />
+
+                </GridLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/tblFRQRepuestos"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:background="@drawable/rectangle_table_base"
+                    android:paddingBottom="5dp"
+                    android:layout_marginBottom="5dp"></TableLayout>
+            </LinearLayout>
+
             <GridLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
@@ -229,7 +294,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Limpiar"
-                    android:id="@+id/btnLimpiar"
+                    android:id="@+id/btnFRQLimpiar"
                     style="@style/BaseButton"
                     android:layout_row="0"
                     android:layout_column="9" />

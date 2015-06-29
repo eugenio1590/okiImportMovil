@@ -2,36 +2,36 @@ package modelo;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * The persistent class for the marca_vehiculo database table.
+ * The persistent class for the motor database table.
  * 
  */
-public class MarcaVehiculo implements Serializable {
+public class Motor implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer idMarcaVehiculo;
+	private Integer idMotor;
 
 	private String nombre;
-	
-	private String estatus;
-	
+
 	//bi-directional one-to-many association to Requerimiento
 	private List<Requerimiento> requerimientos;
+
+	public Motor() {
+	}
 	
-	public MarcaVehiculo(String nombre){
+	public Motor(String nombre){
 		this.nombre = nombre;
 	}
 
-	public Integer getIdMarcaVehiculo() {
-		return this.idMarcaVehiculo;
+	public Integer getIdMotor() {
+		return this.idMotor;
 	}
 
-	public void setIdMarcaVehiculo(Integer idMarcaVehiculo) {
-		this.idMarcaVehiculo = idMarcaVehiculo;
+	public void setIdMotor(Integer idMotor) {
+		this.idMotor = idMotor;
 	}
 
 	public String getNombre() {
@@ -52,24 +52,16 @@ public class MarcaVehiculo implements Serializable {
 
 	public Requerimiento addRequerimiento(Requerimiento requerimiento) {
 		getRequerimientos().add(requerimiento);
-		requerimiento.setMarcaVehiculo(this);
+		requerimiento.setMotor(this);
 
 		return requerimiento;
 	}
 
 	public Requerimiento removeRequerimiento(Requerimiento requerimiento) {
 		getRequerimientos().remove(requerimiento);
-		requerimiento.setMarcaVehiculo(null);
+		requerimiento.setMotor(null);
 
 		return requerimiento;
 	}
 
-	public String getEstatus() {
-		return estatus;
-	}
-
-	public void setEstatus(String estatus) {
-		this.estatus = estatus;
-	}
-	
 }
