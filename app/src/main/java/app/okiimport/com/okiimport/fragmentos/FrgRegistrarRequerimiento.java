@@ -330,6 +330,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         this.insertarObjeto(space1, nroFila, Gravity.LEFT);
 
         EditText txtFRQDescripcion = new EditText(this.getActivity());
+        txtFRQDescripcion.setId(chFRQRepuesto.getId()+10);
         txtFRQDescripcion.setTextColor(Color.BLACK);
         txtFRQDescripcion.setEms(7);
         this.insertarObjeto(txtFRQDescripcion, nroFila, Gravity.LEFT);
@@ -340,8 +341,8 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
         LinearLayout llFRQCantidad = new LinearLayout(this.getActivity());
         llFRQCantidad.setOrientation(LinearLayout.VERTICAL);
-        //llFRQCantidad.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         llFRQCantidad.setGravity(Gravity.CENTER);
+
         // Validator de la Cantidad
         ViewValidator vvFRQCantidad = new ViewValidator(this.getActivity());
         vvFRQCantidad.setLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -351,6 +352,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         //
 
         EditText nmbFRQCantidad = new EditText(this.getActivity());
+        nmbFRQCantidad.setId(chFRQRepuesto.getId()+20);
         nmbFRQCantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
         nmbFRQCantidad.setTextColor(Color.BLACK);
         nmbFRQCantidad.addTextChangedListener(new ViewValidator.TxtValidator(nmbFRQCantidad, vvFRQCantidad, R.drawable.edittext_error) {
@@ -365,7 +367,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                         }
                     }
                     catch (NumberFormatException e){
-                        error = "Cant. Exedida";
+                        error = "Cant. Excedida";
                         return false;
                     }
                 }
@@ -376,8 +378,6 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         llFRQCantidad.addView(nmbFRQCantidad);
         llFRQCantidad.addView(vvFRQCantidad);
         this.insertarObjeto(llFRQCantidad, nroFila, Gravity.LEFT);
-
-        //this.insertarObjeto(vvFRQCantidad, nroFila, Gravity.LEFT);
     }
 
     private void eliminarRepuestos(){
