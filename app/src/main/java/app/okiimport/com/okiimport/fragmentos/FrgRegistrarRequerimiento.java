@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -35,6 +34,7 @@ import librerias.componentes.Calendario;
 import librerias.componentes.ViewValidator;
 import modelo.Ciudad;
 import modelo.Cliente;
+import modelo.DetalleRequerimiento;
 import modelo.Estado;
 import modelo.MarcaVehiculo;
 import modelo.Requerimiento;
@@ -254,7 +254,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQTipoPersona.setSelection(0);
         spnFRQEstado.setSelection(0);
         spnFRQMarca.setSelection(0);
-        //eliminarRepuestos();
+        eliminarRepuestos();
     }
 
     @Override
@@ -329,11 +329,36 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         space1.setText("  ");
         this.insertarObjeto(space1, nroFila, Gravity.LEFT);
 
+        LinearLayout llFRQDescripcion = new LinearLayout(this.getActivity());
+        llFRQDescripcion.setOrientation(LinearLayout.VERTICAL);
+        llFRQDescripcion.setGravity(Gravity.CENTER);
+
+        //Validator de la Descripcion
+        ViewValidator vvFRQDescripcion = new ViewValidator(this.getActivity());
+        vvFRQDescripcion.setLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        vvFRQDescripcion.setImageResource(R.drawable.warning);
+        vvFRQDescripcion.setImageBackgroundColor(Color.TRANSPARENT);
+        vvFRQDescripcion.getTxtError().setTextSize(10f);
+        //
+
         EditText txtFRQDescripcion = new EditText(this.getActivity());
-        txtFRQDescripcion.setId(chFRQRepuesto.getId()+10);
+        txtFRQDescripcion.setId(chFRQRepuesto.getId() + 10);
         txtFRQDescripcion.setTextColor(Color.BLACK);
-        txtFRQDescripcion.setEms(7);
-        this.insertarObjeto(txtFRQDescripcion, nroFila, Gravity.LEFT);
+        txtFRQDescripcion.setEms(6);
+        txtFRQDescripcion.addTextChangedListener(new ViewValidator.TxtValidator(txtFRQDescripcion, vvFRQDescripcion, R.drawable.edittext_error) {
+            @Override
+            public boolean validateAfterChange(EditText editText, String text) {
+                if(text.trim().equalsIgnoreCase("")) {
+                    error = "Campo obligatorio";
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        llFRQDescripcion.addView(txtFRQDescripcion);
+        llFRQDescripcion.addView(vvFRQDescripcion);
+        this.insertarObjeto(llFRQDescripcion, nroFila, Gravity.LEFT);
 
         TextView space2 = new TextView(this.getActivity());
         space2.setText("     ");
@@ -371,6 +396,10 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                         return false;
                     }
                 }
+                else{
+                    error = "Campo obligatorio";
+                    return false;
+                }
                 return true;
             }
         });
@@ -381,7 +410,6 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     }
 
     private void eliminarRepuestos(){
-        ActivityGeneric.imprimirConsola("ERLIMINAR", "REPUESTOS");
         this.tabla = tblFRQRepuestos;
         Collections.sort(checkRemover, new Comparator<CheckBox>() {
             @Override
@@ -411,17 +439,36 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     }
 
     private void registrarRequerimiento(Cliente cliente){
-        Requerimiento requerimiento = new Requerimiento(cliente);
-        requerimiento.setMarcaVehiculo(marcaVehiculo);
-        requerimiento.setModeloV(getGeneric(R.id.txtFRQModelo, String.class));
-        Integer anno = Integer.valueOf(getGeneric(R.id.txtFRQAnno, String.class));
-        ActivityGeneric.imprimirConsola("ANNO DEL VEHICULO: ", ""+anno);
-        requerimiento.setAnnoV(Integer.valueOf(getGeneric(R.id.txtFRQAnno, String.class)));
-        requerimiento.setSerialCarroceriaV(getGeneric(R.id.txtFRQSerial, String.class));
+        if(cliente!=null) {
+            Requerimiento requerimiento = new Requerimiento(cliente);
+            requerimiento.setMarcaVehiculo(marcaVehiculo);
+            requerimiento.setModeloV(getGeneric(R.id.txtFRQModelo, String.class));
+            requerimiento.setAnnoV(Integer.valueOf(getGeneric(R.id.txtFRQAnno, String.class)));
+            requerimiento.setSerialCarroceriaV(getGeneric(R.id.txtFRQSerial, String.class));
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("requerimiento", requerimiento);
-        serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, true);
-        serviceRequerimiento.execute(1, R.id.btnFRQEnviar, params);
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("requerimiento", requerimiento);
+            serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, true);
+            serviceRequerimiento.execute(1, R.id.btnFRQEnviar, params);
+        }
+    }
+
+    private void registrarDetalleRequerimiento(Requerimiento requerimiento){
+        if(requerimiento!=null) {
+            this.tabla = tblFRQRepuestos;
+            for (int i = 1; i < tabla.getChildCount(); i++) {
+                EditText txtFRQDescripcion = (EditText) this.getComponente(i + 10);
+                EditText nmbFRQCantidad = (EditText) this.getComponente(i + 20);
+
+                DetalleRequerimiento detalleRequerimiento = new DetalleRequerimiento();
+                detalleRequerimiento.setDescripcion(txtFRQDescripcion.getText().toString());
+                detalleRequerimiento.setCantidad(Long.valueOf(nmbFRQCantidad.getText().toString()));
+                detalleRequerimiento.setRequerimiento(requerimiento);
+
+                requerimiento.addDetalleRequerimiento(detalleRequerimiento);
+            }
+
+            //Falta llamar al servicio
+        }
     }
 }

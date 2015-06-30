@@ -3,22 +3,34 @@ package servicio;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,8 +145,11 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         params = (params==null) ? "" : params;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
+        restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 
         HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
         requestHeaders.setContentType(new MediaType("application","json"));
 
         HttpEntity<X> requestEntity = new HttpEntity<X>(data, requestHeaders);
@@ -153,7 +168,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
     protected <Y> Y getToJSONObject(Class<Y> modelo, Map<String, Object> mapModel){
         JsonParser jsonParser = new JsonParser();
-        Gson gson = new GsonBuilder()//.registerTypeHierarchyAdapter(byte[].class, new ByteArrayToBase64TypeAdapter())
+        Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(byte[].class, new ByteArrayToBase64TypeAdapter())
                 .setDateFormat("yyyy-mm-dd HH:mm:ss").create();
         ActivityGeneric.imprimirConsola("Data: ", gson.toJson(mapModel));
         JsonObject jsonObject = jsonParser.parse(gson.toJson(mapModel)).getAsJsonObject();
@@ -191,5 +206,19 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         String executePostInBackground(Integer id);
         void executeOnPostExecute(Map<String, Object> result);
         void showFragment(Fragmento fragmento);
+    }
+
+    // Using Android's base64 libraries. This can be replaced with any base64 library.
+    private class ByteArrayToBase64TypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
+
+        @Override
+        public byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return Base64.decode(json.getAsString(), Base64.NO_WRAP);
+        }
+
+        @Override
+        public JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(Base64.encodeToString(src, Base64.NO_WRAP));
+        }
     }
 }
