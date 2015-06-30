@@ -28,7 +28,6 @@ import java.util.Vector;
 
 import app.okiimport.com.okiimport.R;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
-import app.okiimport.com.okiimport.fragmentos.configuracion.FrgProgressBar;
 import conexion.IConexionDAO.ObjetosCombo;
 import librerias.ActivityGeneric;
 import librerias.componentes.Calendario;
@@ -70,9 +69,6 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     private EditText txtFRQAnno;
 
     private TableLayout tblFRQRepuestos;
-
-    //Fragmentos
-    private FrgProgressBar frgProgressBar;
 
     //Modelos
     private List<CheckBox> checkRemover;
@@ -203,7 +199,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQMarca.setOnItemSelectedListener(this);
 
         btnFRQAgregar.setOnClickListener(this);
-        //btnFRQEliminar.setOnClickListener(this); Revisar
+        btnFRQEliminar.setOnClickListener(this); //Revisar
         btnFRQLimpiar.setOnClickListener(this);
         btnFRQEnviar.setOnClickListener(this);
 
@@ -248,7 +244,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     public void limpiar() {
         limpiarGeneric(R.id.txtFRQCedula);
         limpiarGeneric(R.id.txtFRQNombre);
-        limpiarGeneric(R.id.txtFRQApellido);
+        limpiarGeneric(R.id.txtFRQCorreo);
         limpiarGeneric(R.id.txtFRQTelefono);
         limpiarGeneric(R.id.txtFRQModelo);
         limpiarGeneric(R.id.txtFRQAnno);
@@ -357,7 +353,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             }
         });
         for(CheckBox checkBox : checkRemover){
-            this.borrarFila(checkBox.getId());
+            this.tabla.removeView((View) checkBox.getParent());
         }
         checkRemover.clear();
     }
@@ -366,7 +362,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         Cliente cliente = new Cliente();
         cliente.setCedula(getGeneric(R.id.txtFRQCedula, String.class));
         cliente.setNombre(getGeneric(R.id.txtFRQNombre, String.class));
-        cliente.setApellido(getGeneric(R.id.txtFRQApellido, String.class));
+        cliente.setCorreo(getGeneric(R.id.txtFRQCorreo, String.class));
         cliente.setTelefono(getGeneric(R.id.txtFRQTelefono, String.class));
         ciudad.setEstado(estado);
         cliente.setCiudad(ciudad);
@@ -378,18 +374,12 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     }
 
     private void registrarRequerimiento(Cliente cliente){
-        /*Cliente cliente = new Cliente();
-        cliente.setCedula(getGeneric(R.id.txtFRQCedula, String.class));
-        cliente.setNombre(getGeneric(R.id.txtFRQNombre, String.class));
-        cliente.setApellido(getGeneric(R.id.txtFRQApellido, String.class));
-        cliente.setTelefono(getGeneric(R.id.txtFRQTelefono, String.class));
-        ciudad.setEstado(estado);
-        cliente.setCiudad(ciudad);*/
-
         Requerimiento requerimiento = new Requerimiento(cliente);
         requerimiento.setMarcaVehiculo(marcaVehiculo);
         requerimiento.setModeloV(getGeneric(R.id.txtFRQModelo, String.class));
-        requerimiento.setAnnoV(getGeneric(R.id.txtFRQAnno, Integer.class));
+        Integer anno = Integer.valueOf(getGeneric(R.id.txtFRQAnno, String.class));
+        ActivityGeneric.imprimirConsola("ANNO DEL VEHICULO: ", ""+anno);
+        requerimiento.setAnnoV(Integer.valueOf(getGeneric(R.id.txtFRQAnno, String.class)));
         requerimiento.setSerialCarroceriaV(getGeneric(R.id.txtFRQSerial, String.class));
 
         Map<String, Object> params = new HashMap<String, Object>();

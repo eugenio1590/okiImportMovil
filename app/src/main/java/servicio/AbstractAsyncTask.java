@@ -1,5 +1,7 @@
 package servicio;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -21,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import app.okiimport.com.okiimport.fragmentos.configuracion.FrgProgressBar;
 import librerias.ActivityGeneric;
 import librerias.componentes.Fragmento;
 
@@ -29,7 +30,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
     protected static final String URL = "http://192.168.1.121:8080/web_service/rest";
 
-    private static FrgProgressBar frgProgressBar;
+    private static ProgressDialog frgProgressBar;
 
     private IComunicatorBackgroundTask padre;
 
@@ -59,9 +60,8 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     protected void onPreExecute()
     {
         //mostramos el círculo de progreso
-        if(frgProgressBar==null) {
-            frgProgressBar = new FrgProgressBar();
-            padre.showFragment(frgProgressBar);
+        if(frgProgressBar ==null) {
+            frgProgressBar = ProgressDialog.show((Context) padre, "", "Loading...");
         }
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     {
         //la tarea en segundo plano ya ha terminado. Ocultamos el progreso.
         try {
-            if (frgProgressBar != null && closeFrgProgressBar) {
+            if(frgProgressBar !=null && closeFrgProgressBar){
                 frgProgressBar.dismiss();
                 frgProgressBar = null;
             }
@@ -153,7 +153,8 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
     protected <Y> Y getToJSONObject(Class<Y> modelo, Map<String, Object> mapModel){
         JsonParser jsonParser = new JsonParser();
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder()//.registerTypeHierarchyAdapter(byte[].class, new ByteArrayToBase64TypeAdapter())
+                .setDateFormat("yyyy-mm-dd HH:mm:ss").create();
         ActivityGeneric.imprimirConsola("Data: ", gson.toJson(mapModel));
         JsonObject jsonObject = jsonParser.parse(gson.toJson(mapModel)).getAsJsonObject();
         return gson.fromJson(jsonObject, modelo);

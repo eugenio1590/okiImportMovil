@@ -74,25 +74,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre (s) *" />
+                    android:text="Nombre (s) / Razón Social *" />
 
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:inputType="textPersonName"
                     android:id="@+id/txtFRQNombre"
-                    android:textColor="@color/Negro"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Apellido (s) *" />
-
-                <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:inputType="textPersonName"
-                    android:id="@+id/txtFRQApellido"
                     android:textColor="@color/Negro"/>
 
                 <TextView
@@ -106,6 +94,18 @@
                     android:inputType="phone"
                     android:id="@+id/txtFRQTelefono"
                     android:textColor="@color/Negro"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Correo *" />
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/txtFRQCorreo"
+                    android:textColor="@color/Negro"
+                    android:inputType="textEmailAddress" />
 
                 <TextView
                     android:layout_width="wrap_content"
