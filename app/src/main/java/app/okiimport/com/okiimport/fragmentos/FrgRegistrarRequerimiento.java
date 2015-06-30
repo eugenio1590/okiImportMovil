@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -337,10 +338,46 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         space2.setText("     ");
         this.insertarObjeto(space2, nroFila, Gravity.LEFT);
 
+        LinearLayout llFRQCantidad = new LinearLayout(this.getActivity());
+        llFRQCantidad.setOrientation(LinearLayout.VERTICAL);
+        //llFRQCantidad.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        llFRQCantidad.setGravity(Gravity.CENTER);
+        // Validator de la Cantidad
+        ViewValidator vvFRQCantidad = new ViewValidator(this.getActivity());
+        vvFRQCantidad.setLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        vvFRQCantidad.setImageResource(R.drawable.warning);
+        vvFRQCantidad.setImageBackgroundColor(Color.TRANSPARENT);
+        vvFRQCantidad.getTxtError().setTextSize(10f);
+        //
+
         EditText nmbFRQCantidad = new EditText(this.getActivity());
         nmbFRQCantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
         nmbFRQCantidad.setTextColor(Color.BLACK);
-        this.insertarObjeto(nmbFRQCantidad, nroFila, Gravity.LEFT);
+        nmbFRQCantidad.addTextChangedListener(new ViewValidator.TxtValidator(nmbFRQCantidad, vvFRQCantidad, R.drawable.edittext_error) {
+            @Override
+            public boolean validateAfterChange(EditText editText, String text) {
+                if(!text.trim().equalsIgnoreCase("")) {
+                    try {
+                        int cantidad = Integer.valueOf(text);
+                        if (cantidad <= 0) {
+                            error = "Cant. mayor que 0";
+                            return false;
+                        }
+                    }
+                    catch (NumberFormatException e){
+                        error = "Cant. Exedida";
+                        return false;
+                    }
+                }
+                return true;
+            }
+        });
+
+        llFRQCantidad.addView(nmbFRQCantidad);
+        llFRQCantidad.addView(vvFRQCantidad);
+        this.insertarObjeto(llFRQCantidad, nroFila, Gravity.LEFT);
+
+        //this.insertarObjeto(vvFRQCantidad, nroFila, Gravity.LEFT);
     }
 
     private void eliminarRepuestos(){
