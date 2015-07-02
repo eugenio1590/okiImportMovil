@@ -18,9 +18,11 @@
     </style>
 
     <style name="BaseButton.Small" parent="android:Widget.Button.Small">
-        <item name="android:background">@drawable/selector_button</item>
+        <item name="android:background">@drawable/selector_button_small</item>
         <item name="android:textColor">@color/Blanco</item>
         <item name="android:layout_margin">10px</item>
+        <item name="android:height">5dp</item>
+        <item name="android:textSize">13dp</item>
     </style>
     <!--parent="Theme.AppCompat.Light.DarkActionBar"-->
 </resources>

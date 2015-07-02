@@ -23,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -88,6 +89,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 Log.e("Error in Service", e.toString());
             }
         }
@@ -147,8 +149,10 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         restTemplate.getMessageConverters().add(new ByteArrayHttpMessageConverter());
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.set("Connection", "Close");
         requestHeaders.setAccept(Collections.singletonList(new MediaType("application", "json")));
         requestHeaders.setContentType(new MediaType("application","json"));
 

@@ -238,7 +238,7 @@
 
                 <GridLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp">

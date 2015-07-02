@@ -41,6 +41,7 @@ import modelo.Requerimiento;
 import servicio.AbstractAsyncTask.IComunicatorBackgroundTask;
 import servicio.ServiceCiudad;
 import servicio.ServiceCliente;
+import servicio.ServiceDetalleRequerimiento;
 import servicio.ServiceEstado;
 import servicio.ServiceMarcaVehiculo;
 import servicio.ServiceRequerimiento;
@@ -254,7 +255,9 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQTipoPersona.setSelection(0);
         spnFRQEstado.setSelection(0);
         spnFRQMarca.setSelection(0);
-        eliminarRepuestos();
+
+        this.checkRemover.clear();
+        agregarRepuesto(true, 1);
     }
 
     @Override
@@ -269,6 +272,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                 limpiar();
             }; break;
             case 1: registrarRequerimiento((Cliente) result.get("cliente")); break;
+            //case 2: registrarDetalleRequerimiento((Requerimiento) result.get("requerimiento")); break;
             default: break;
         }
     }
@@ -424,8 +428,9 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     }
 
     private void registrarCliente(){
+        ObjetosCombo tipoPersona = (ObjetosCombo) spnFRQTipoPersona.getSelectedItem();
         Cliente cliente = new Cliente();
-        cliente.setCedula(getGeneric(R.id.txtFRQCedula, String.class));
+        cliente.setCedula(tipoPersona.toString()+getGeneric(R.id.txtFRQCedula, String.class));
         cliente.setNombre(getGeneric(R.id.txtFRQNombre, String.class));
         cliente.setCorreo(getGeneric(R.id.txtFRQCorreo, String.class));
         cliente.setTelefono(getGeneric(R.id.txtFRQTelefono, String.class));
@@ -448,15 +453,17 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("requerimiento", requerimiento);
-            serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, true);
-            serviceRequerimiento.execute(1, R.id.btnFRQEnviar, params);
+            serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, true); //va false
+            serviceRequerimiento.execute(1, 2, params);
         }
     }
 
     private void registrarDetalleRequerimiento(Requerimiento requerimiento){
+        ServiceDetalleRequerimiento serviceDetalleRequerimiento = null;
         if(requerimiento!=null) {
             this.tabla = tblFRQRepuestos;
             for (int i = 1; i < tabla.getChildCount(); i++) {
+                Integer idComponent = null;
                 EditText txtFRQDescripcion = (EditText) this.getComponente(i + 10);
                 EditText nmbFRQCantidad = (EditText) this.getComponente(i + 20);
 
@@ -465,7 +472,17 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                 detalleRequerimiento.setCantidad(Long.valueOf(nmbFRQCantidad.getText().toString()));
                 detalleRequerimiento.setRequerimiento(requerimiento);
 
-                requerimiento.addDetalleRequerimiento(detalleRequerimiento);
+                if(i+1==tabla.getChildCount()) {
+                    serviceDetalleRequerimiento = new ServiceDetalleRequerimiento((IComunicatorBackgroundTask) listener, true);
+                    idComponent = R.id.btnFRQEnviar;
+                }
+                else {
+                    serviceDetalleRequerimiento = new ServiceDetalleRequerimiento((IComunicatorBackgroundTask) listener, false);
+                    idComponent = null;
+                }
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("detalleRequerimiento", detalleRequerimiento);
+                serviceDetalleRequerimiento.execute(1, idComponent, params);
             }
 
             //Falta llamar al servicio
