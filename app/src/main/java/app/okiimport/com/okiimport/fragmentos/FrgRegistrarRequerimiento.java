@@ -272,7 +272,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                 limpiar();
             }; break;
             case 1: registrarRequerimiento((Cliente) result.get("cliente")); break;
-            //case 2: registrarDetalleRequerimiento((Requerimiento) result.get("requerimiento")); break;
+            case 2: registrarDetalleRequerimiento((Requerimiento) result.get("requerimiento")); break;
             default: break;
         }
     }
@@ -321,7 +321,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             this.borrarTabla();
             this.encabezado = new String[]{"", "  ", "Descripcion *", "     ", "Cantidad *"};
             TableRow filaEncabezado=this.crearCeldaEncabezado(Color.BLACK, Gravity.LEFT);
-            filaEncabezado.setBackgroundResource(R.drawable.rectangle_head_table); //Falta Personalizar el Head de la Tabla
+            filaEncabezado.setBackgroundResource(R.drawable.rectangle_head_table);
         }
 
         CheckBox chFRQRepuesto = new CheckBox(this.getActivity());
@@ -453,7 +453,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("requerimiento", requerimiento);
-            serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, true); //va false
+            serviceRequerimiento = new ServiceRequerimiento((IComunicatorBackgroundTask) listener, false); //va false
             serviceRequerimiento.execute(1, 2, params);
         }
     }
@@ -462,6 +462,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         ServiceDetalleRequerimiento serviceDetalleRequerimiento = null;
         if(requerimiento!=null) {
             this.tabla = tblFRQRepuestos;
+            ActivityGeneric.imprimirConsola("IdRequerimiento", ""+requerimiento.getIdRequerimiento());
             for (int i = 1; i < tabla.getChildCount(); i++) {
                 Integer idComponent = null;
                 EditText txtFRQDescripcion = (EditText) this.getComponente(i + 10);
@@ -481,6 +482,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                     idComponent = null;
                 }
                 Map<String, Object> params = new HashMap<String, Object>();
+                params.put("idRequerimiento", requerimiento.getIdRequerimiento());
                 params.put("detalleRequerimiento", detalleRequerimiento);
                 serviceDetalleRequerimiento.execute(1, idComponent, params);
             }

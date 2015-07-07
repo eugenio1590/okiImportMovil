@@ -1,5 +1,7 @@
 package servicio;
 
+import android.util.Log;
+
 import java.util.Map;
 
 import modelo.DetalleRequerimiento;
