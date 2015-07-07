@@ -20,7 +20,7 @@ public class DetalleRequerimiento implements Serializable {
 
 	private String estatus;
 
-	private byte[] foto;
+	//private byte[] foto;
 	
 	private String descripcion;
 
@@ -62,13 +62,13 @@ public class DetalleRequerimiento implements Serializable {
 		this.estatus = estatus;
 	}
 
-	public byte[] getFoto() {
+	/*public byte[] getFoto() {
 		return this.foto;
 	}
 
 	public void setFoto(byte[] foto) {
 		this.foto = foto;
-	}
+	}*/
 
 	public String getDescripcion() {
 		return descripcion;
