@@ -67,8 +67,7 @@
                         android:inputType="number"
                         android:ems="10"
                         android:id="@+id/txtFRQCedula"
-                        android:layout_gravity="center"
-                        android:textColor="@color/Negro"/>
+                        android:layout_gravity="center"/>
                 </LinearLayout>
 
                 <TextView
@@ -80,8 +79,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:inputType="textPersonName"
-                    android:id="@+id/txtFRQNombre"
-                    android:textColor="@color/Negro"/>
+                    android:id="@+id/txtFRQNombre"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,8 +90,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:inputType="phone"
-                    android:id="@+id/txtFRQTelefono"
-                    android:textColor="@color/Negro"/>
+                    android:id="@+id/txtFRQTelefono"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -104,7 +101,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/txtFRQCorreo"
-                    android:textColor="@color/Negro"
                     android:inputType="textEmailAddress" />
 
                 <TextView
@@ -177,8 +173,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/txtFRQModelo"
-                    android:textColor="@color/Negro"/>
+                    android:id="@+id/txtFRQModelo"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -190,8 +185,7 @@
                     android:layout_height="fill_parent"
                     android:inputType="date"
                     android:ems="10"
-                    android:id="@+id/txtFRQAnno"
-                    android:textColor="@color/Negro" />
+                    android:id="@+id/txtFRQAnno"/>
 
                 <view
                     android:layout_width="match_parent"
@@ -207,8 +201,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/txtFRQSerial"
-                    android:textColor="@color/Negro"/>
+                    android:id="@+id/txtFRQSerial"/>
 
             </LinearLayout>
 
@@ -274,7 +267,7 @@
                     android:paddingRight="5dp"
                     android:background="@drawable/rectangle_table_base"
                     android:paddingBottom="5dp"
-                    android:layout_marginBottom="5dp"></TableLayout>
+                    android:layout_marginBottom="5dp"/>
             </LinearLayout>
 
             <GridLayout

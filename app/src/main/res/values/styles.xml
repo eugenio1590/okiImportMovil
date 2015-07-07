@@ -1,15 +1,29 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="android:colorPrimary">@color/ColorPrimary</item>
+
         <item name="android:colorPrimaryDark">@color/ColorPrimaryDark</item>
-        <item name="android:textColorPrimary">@color/TextColorPrimary</item>
+        <!--<item name="android:textColorPrimary">@color/TextColorPrimary</item>-->
         <item name="android:icon">@drawable/ic_launcher</item>
         <item name="android:colorAccent">@color/accent_material_light</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
+    <!--ACTION BAR-->
+    <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/ColorPrimary</item>
+        <item name="android:titleTextStyle">@style/ActionBarStyle.TitleTextStyle</item>
+    </style>
+
+    <style name="ActionBarStyle.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/TextColorPrimary</item>
+    </style>
+
+    <!--BOTONES-->
     <style name="BaseButton">
         <item name="android:background">@drawable/selector_button</item>
         <item name="android:textColor">@color/Blanco</item>
@@ -24,5 +38,4 @@
         <item name="android:height">5dp</item>
         <item name="android:textSize">13dp</item>
     </style>
-    <!--parent="Theme.AppCompat.Light.DarkActionBar"-->
 </resources>

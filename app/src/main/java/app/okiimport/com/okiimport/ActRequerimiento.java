@@ -3,19 +3,18 @@ package app.okiimport.com.okiimport;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+import librerias.FragmentoActivity;
 import librerias.componentes.Fragmento;
 
 import static app.okiimport.com.okiimport.NavigationDrawerFragment.*;
 import static app.okiimport.com.okiimport.fragmentos.FrgRequerimiento.*;
 
-public abstract class ActRequerimiento extends ActionBarActivity
+public abstract class ActRequerimiento extends FragmentoActivity
         implements NavigationDrawerCallbacks, OnFragmentInteractionListener {
 
     protected Menu menu;
@@ -100,7 +99,7 @@ public abstract class ActRequerimiento extends ActionBarActivity
     /**METODOS PROPIOS DE LA CLASE*/
     protected void createNavigation() {
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(navigationDrawer);
+                getFragmentManager().findFragmentById(navigationDrawer);
         mTitle = getTitle();
         mNavigationDrawerFragment.setTitles(fragmentos);
         // Set up the drawer.
@@ -110,8 +109,7 @@ public abstract class ActRequerimiento extends ActionBarActivity
     }
 
     public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        android.app.ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
         actionBar.setDisplayHomeAsUpEnabled(true);

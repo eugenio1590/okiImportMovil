@@ -30,6 +30,11 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
         super.createNavigation();
     }
 
+    @Override
+    protected void cargarCombo(int id) {
+
+    }
+
     /**METODOS OVERRIDE*/
     @Override
     public Fragmento newInstanceFragment(Integer position) {
@@ -78,5 +83,30 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     public void showFragment(Fragmento fragmento) {
         FragmentManager fm = getSupportFragmentManager();
         fragmento.show(fm, "fragment_"+Math.random());
+    }
+
+    @Override
+    public <T> T getGeneric(int id, Class<T> tClass) {
+        return null;
+    }
+
+    @Override
+    public boolean validarFormulario() {
+        return false;
+    }
+
+    @Override
+    public void limpiar() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void setListeners() {
+
     }
 }
