@@ -2,7 +2,10 @@ package app.okiimport.com.okiimport.fragmentos;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,7 +50,7 @@ import servicio.ServiceMarcaVehiculo;
 import servicio.ServiceRequerimiento;
 
 
-public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnItemSelectedListener{
+public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnItemSelectedListener, View.OnFocusChangeListener {
 
     public static final String TITULO = EFrgTitulos.FRG_REGISTRAR_REQUERIMIENTO.getValue();
 
@@ -69,6 +72,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     private Button btnFRQEnviar;
 
     private EditText txtFRQAnno;
+    private EditText txtFRQCedula;
 
     private TableLayout tblFRQRepuestos;
 
@@ -81,6 +85,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     private Estado estado;
     private Ciudad ciudad;
     private MarcaVehiculo marcaVehiculo;
+    private Cliente cliente;
 
     public FrgRegistrarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_registrar_requerimiento);
@@ -177,6 +182,18 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (!hasFocus) {
+            ObjetosCombo tipoPersona = getTipoPersona();
+            String cedula = tipoPersona.toString() + this.txtFRQCedula.getText().toString();
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("cedula", cedula);
+            ServiceCliente serviceCliente = new ServiceCliente((IComunicatorBackgroundTask) listener, true);
+            serviceCliente.execute(2, R.id.txtFRQCedula, params);
+        }
+    }
+
     /**METODOS OVERRIDE*/
     @Override
     protected void setListener(View view) {
@@ -191,6 +208,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         btnFRQEnviar = (Button) view.findViewById(R.id.btnFRQEnviar);
 
         txtFRQAnno = (EditText) view.findViewById(R.id.txtFRQAnno);
+        txtFRQCedula = (EditText) view.findViewById(R.id.txtFRQCedula);
 
         tblFRQRepuestos = (TableLayout) view.findViewById(R.id.tblFRQRepuestos);
 
@@ -201,9 +219,12 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQMarca.setOnItemSelectedListener(this);
 
         btnFRQAgregar.setOnClickListener(this);
-        btnFRQEliminar.setOnClickListener(this); //Revisar
+        btnFRQEliminar.setOnClickListener(this);
         btnFRQLimpiar.setOnClickListener(this);
         btnFRQEnviar.setOnClickListener(this);
+
+
+        txtFRQCedula.setOnFocusChangeListener(this);
 
         agregarRepuesto(true, 1);
     }
@@ -266,8 +287,8 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             case R.id.spnFRQEstado: cargarListaEstado(result); break;
             case R.id.spnFRQCiudad: cargarListaCiudades(result); break;
             case R.id.spnFRQMarca: cargarListaMarcaVehiculos(result); break;
+            case R.id.txtFRQCedula: cargarCliente(result); break;
             case R.id.btnFRQEnviar: {
-               //Esta dando problemas en el result
                 mostrarMensaje("Requerimiento Registrado");
                 limpiar();
             }; break;
@@ -311,6 +332,18 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                 marcasVehiculosCombo.add(new ObjetosCombo(marca.getIdMarcaVehiculo(), marca.getNombre()));
 
             ActivityGeneric.cargarCombo(R.id.spnFRQMarca, getView(), marcasVehiculosCombo);
+        }
+    }
+
+    private void cargarCliente(Map<String, Object> result) {
+        if(result!=null && result.get("cliente")!=null){
+            cliente = (Cliente) result.get("cliente");
+            EditText txtFRQNombre = (EditText) getView().findViewById(R.id.txtFRQNombre);
+            txtFRQNombre.setText(cliente.getNombre());
+            EditText txtFRQCorreo = (EditText) getView().findViewById(R.id.txtFRQCorreo);
+            txtFRQCorreo.setText(cliente.getCorreo());
+            EditText txtFRQTelefono = (EditText) getView().findViewById(R.id.txtFRQTelefono);
+            txtFRQTelefono.setText(cliente.getTelefono());
         }
     }
 
@@ -427,9 +460,14 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         checkRemover.clear();
     }
 
+    private ObjetosCombo getTipoPersona(){
+        return (ObjetosCombo) spnFRQTipoPersona.getSelectedItem();
+    }
+
     private void registrarCliente(){
-        ObjetosCombo tipoPersona = (ObjetosCombo) spnFRQTipoPersona.getSelectedItem();
-        Cliente cliente = new Cliente();
+        ObjetosCombo tipoPersona = getTipoPersona();
+        if(cliente==null)
+            cliente = new Cliente();
         cliente.setCedula(tipoPersona.toString()+getGeneric(R.id.txtFRQCedula, String.class));
         cliente.setNombre(getGeneric(R.id.txtFRQNombre, String.class));
         cliente.setCorreo(getGeneric(R.id.txtFRQCorreo, String.class));
@@ -490,4 +528,6 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             //Falta llamar al servicio
         }
     }
+
+
 }

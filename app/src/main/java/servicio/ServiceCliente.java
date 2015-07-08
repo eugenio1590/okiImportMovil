@@ -23,6 +23,7 @@ public class ServiceCliente extends AbstractAsyncTask {
         Map<String, Object> result = null;
         switch (id){
             case 1: result=registrarOActualizarCliente(params); break;
+            case 2: result=buscarCliente(params); break;
         }
         return result;
     }
@@ -35,6 +36,20 @@ public class ServiceCliente extends AbstractAsyncTask {
             Map<String, Object> mapModel = (Map<String, Object>) result.get("cliente");
             cliente = (Cliente) getToJSONObject(Cliente.class, mapModel);
             result.put("cliente", cliente);
+        }
+        return result;
+    }
+
+    private Map<String,Object> buscarCliente(Map<String, Object> params) {
+        Map<String, Object> result = null;
+        String cedula = (String) params.get("cedula");
+        if(cedula!=null){
+            result = (Map<String, Object>) getToJSON("/gestionMaestros/clientes/"+cedula, "", Map.class);
+            Map<String, Object> mapCliente = (Map<String, Object>) result.get("cliente");
+            if(mapCliente!=null) {
+                Cliente cliente = (Cliente) getToJSONObject(Cliente.class, mapCliente);
+                result.put("cliente", cliente);
+            }
         }
         return result;
     }
