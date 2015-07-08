@@ -517,7 +517,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                 }
                 else {
                     serviceDetalleRequerimiento = new ServiceDetalleRequerimiento((IComunicatorBackgroundTask) listener, false);
-                    idComponent = null;
+                    idComponent = -1;
                 }
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("idRequerimiento", requerimiento.getIdRequerimiento());
