@@ -110,6 +110,9 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
             Log.e("Error in ProgressBar", e.toString());
         }
 
+        if(result==null)
+            result = new HashMap<String, Object>();
+
         if(padre!=null) {
             result.put("idComponent", this.idComponent);
             padre.executeOnPostExecute(result);

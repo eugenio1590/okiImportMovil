@@ -29,13 +29,9 @@ public final class ServiceCiudad extends AbstractAsyncTask {
 
     /**METODOS PROPIOS DE LA CLASE*/
     private Map<String, Object> consultarCiudades(Integer idEstado){
-        ActivityGeneric.imprimirConsola("IdEstado: ", ""+idEstado);
-        ActivityGeneric.imprimirConsola("Ruta: ", "/gestionMaestros/estados"+"/"+idEstado+"/ciudades");
         Map<String, Object> result = (Map<String, Object>) getToJSON("/gestionMaestros/estados/"+idEstado+"/ciudades", "", Map.class);
         if(result!=null){
-            ActivityGeneric.imprimirConsola("result not null", "");
             List<Map<String, Object>> mapCiudades = (List<Map<String, Object>>) result.get("ciudades");
-            ActivityGeneric.imprimirConsola("Lista Size: ", ""+mapCiudades.size());
             List<Ciudad> ciudades = getToJSONList(Ciudad.class, mapCiudades);
             result.put("ciudades", ciudades);
         }
