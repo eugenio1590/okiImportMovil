@@ -184,7 +184,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        if (!hasFocus) {
+        if (!hasFocus && !this.txtFRQCedula.getText().toString().trim().toLowerCase().equalsIgnoreCase("")) {
             ObjetosCombo tipoPersona = getTipoPersona();
             String cedula = tipoPersona.toString() + this.txtFRQCedula.getText().toString();
             Map<String, Object> params = new HashMap<String, Object>();

@@ -53,11 +53,8 @@ public class ServiceRequerimiento extends AbstractAsyncTask {
                     "pagina="+pagina+"&limite="+limite, Map.class);
             if (result != null) {
                 List<Map<String, Object>> mapRequerimiento = (List<Map<String, Object>>) result.get("requerimientos");
-                Map<String, Object> mapTotal = (Map<String, Object>) result.get("total");
                 List<Requerimiento> requerimientos = getToJSONList(Requerimiento.class, mapRequerimiento);
-                Integer total = Integer.valueOf((String) getToJSONObject(String.class, mapTotal));
-                ActivityGeneric.imprimirConsola("Total", ""+total);
-                ActivityGeneric.imprimirConsola("Reqm:", ""+requerimientos.size());
+                Integer total = (Integer) result.get("total");
                 result.put("total", total);
                 result.put("requerimientos", requerimientos);
             }
