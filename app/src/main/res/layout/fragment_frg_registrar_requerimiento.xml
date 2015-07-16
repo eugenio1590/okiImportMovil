@@ -216,7 +216,6 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Datos de Repuestos"
-                    android:id="@+id/textView"
                     android:layout_marginLeft="20px"
                     android:textColor="@color/Blanco" />
             </LinearLayout>

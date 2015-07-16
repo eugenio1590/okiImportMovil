@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -14,12 +16,13 @@ import java.util.List;
 import java.util.Map;
 
 import app.okiimport.com.okiimport.R;
+import app.okiimport.com.okiimport.fragmentos.configuracion.AdptRequerimiento;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import librerias.ActivityGeneric;
 import modelo.Requerimiento;
 import servicio.ServiceRequerimiento;
 
-public class FrgVerificarRequerimiento extends FrgRequerimiento implements SearchView.OnQueryTextListener {
+public class FrgVerificarRequerimiento extends FrgRequerimiento implements SearchView.OnQueryTextListener, AbsListView.OnScrollListener {
 
     public static final String TITULO = EFrgTitulos.FRG_VEFIRICAR_REQUERIMIENTO.getValue();
 
@@ -28,6 +31,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
     //GUI
     private Spinner spnFVQTipoPersona;
     private SearchView srchFVQCedula;
+    private ListView lstFVQRequerimientos;
 
     public FrgVerificarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_verificar_requerimiento);
@@ -48,7 +52,6 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        ActivityGeneric.imprimirConsola("EVENTO:", "TextChange");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cedula", "V"+query);
         params.put("pagina", 0);
@@ -69,16 +72,28 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
     }
 
     @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+    /**METODOS OVERRIDE*/
+    @Override
     protected void setListener(View view) {
         spnFVQTipoPersona = (Spinner) view.findViewById(R.id.spnFVQTipoPersona);
         srchFVQCedula = (SearchView) view.findViewById(R.id.srchFVQCedula);
+        lstFVQRequerimientos = (ListView) view.findViewById(R.id.lstFVQRequerimientos);
 
         cargarCombo(R.id.spnFVQTipoPersona, view);
 
         srchFVQCedula.setOnQueryTextListener(this);
+        lstFVQRequerimientos.setOnScrollListener(this);
     }
 
-    /**METODOS OVERRIDE*/
     @Override
     protected void setValidator(View view) {
 
@@ -116,6 +131,9 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
         List<Requerimiento> requerimientos = (List<Requerimiento>) result.get("requerimientos");
         if(total != 0 && !requerimientos.isEmpty()){
             srchFVQCedula.setSubmitButtonEnabled(false);
+            lstFVQRequerimientos.setAdapter(new AdptRequerimiento(getActivity(), requerimientos));
         }
     }
+
+
 }
