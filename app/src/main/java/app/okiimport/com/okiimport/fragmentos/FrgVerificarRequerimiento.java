@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -18,6 +19,7 @@ import java.util.Map;
 import app.okiimport.com.okiimport.R;
 import app.okiimport.com.okiimport.fragmentos.configuracion.AdptRequerimiento;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
+import conexion.IConexionDAO;
 import librerias.ActivityGeneric;
 import modelo.Requerimiento;
 import servicio.ServiceRequerimiento;
@@ -32,6 +34,10 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
     private Spinner spnFVQTipoPersona;
     private SearchView srchFVQCedula;
     private ListView lstFVQRequerimientos;
+
+    //Atributos
+    private Integer totalRequerimientos;
+    private Boolean loading = false;
 
     public FrgVerificarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_verificar_requerimiento);
@@ -52,13 +58,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("cedula", "V"+query);
-        params.put("pagina", 0);
-        params.put("limite", PAGE_SIZE);
-        ServiceRequerimiento serviceRequerimiento
-                = new ServiceRequerimiento((servicio.AbstractAsyncTask.IComunicatorBackgroundTask) listener, true);
-        serviceRequerimiento.execute(2, R.id.srchFVQCedula, params);
+        cambiarRequerimientos(query, 0);
         return true;
     }
 
@@ -78,7 +78,11 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+        boolean lastItem = (firstVisibleItem + visibleItemCount == totalItemCount);
+        switch (view.getId()){
+            case R.id.lstFVQRequerimientos : paginarRequerimiento(lastItem); break;
+            default: break;
+        }
     }
 
     /**METODOS OVERRIDE*/
@@ -126,13 +130,48 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
     }
 
     /**METODOS PROPIOS DE LA CLASE*/
-    private void cargarRequerimientos(Map<String, Object> result) {
-        Integer total = (Integer) result.get("total");
-        List<Requerimiento> requerimientos = (List<Requerimiento>) result.get("requerimientos");
-        if(total != 0 && !requerimientos.isEmpty()){
-            srchFVQCedula.setSubmitButtonEnabled(false);
-            lstFVQRequerimientos.setAdapter(new AdptRequerimiento(getActivity(), requerimientos));
+    private void cambiarRequerimientos(String query, int pagina){
+        IConexionDAO.ObjetosCombo tipoPersona = (IConexionDAO.ObjetosCombo) spnFVQTipoPersona.getSelectedItem();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cedula", tipoPersona.toString()+query);
+        params.put("pagina", pagina);
+        params.put("limite", PAGE_SIZE);
+        ServiceRequerimiento serviceRequerimiento
+                = new ServiceRequerimiento((servicio.AbstractAsyncTask.IComunicatorBackgroundTask) listener, true);
+        serviceRequerimiento.execute(2, R.id.srchFVQCedula, params);
+    }
+
+    private void paginarRequerimiento(boolean lastItem) {
+        String query = srchFVQCedula.getQuery().toString();
+        if(totalRequerimientos!=null){
+            Integer totalItemCount = lstFVQRequerimientos.getAdapter().getCount();
+            boolean moreRows = totalItemCount < totalRequerimientos;
+            if(lastItem && moreRows && !loading) {
+                loading = true;
+                cambiarRequerimientos(query, Integer.valueOf(totalRequerimientos / totalItemCount));
+            }
         }
+    }
+
+    private void cargarRequerimientos(Map<String, Object> result) {
+        totalRequerimientos = (Integer) result.get("total");
+        List<Requerimiento> requerimientos = (List<Requerimiento>) result.get("requerimientos");
+
+        if(totalRequerimientos != 0 && !requerimientos.isEmpty()){
+            srchFVQCedula.setSubmitButtonEnabled(false);
+            ListAdapter adapter = lstFVQRequerimientos.getAdapter();
+            if(adapter==null)
+                lstFVQRequerimientos.setAdapter(new AdptRequerimiento(getActivity(), requerimientos));
+            else if(adapter instanceof AdptRequerimiento) {
+                for(Requerimiento requerimiento : requerimientos)
+                    ((AdptRequerimiento) adapter).add(requerimiento);
+                ((AdptRequerimiento) adapter).notifyDataSetChanged();
+            }
+        }
+        else
+            lstFVQRequerimientos.setAdapter(new AdptRequerimiento(getActivity(), requerimientos));
+
+        loading = false;
     }
 
 
