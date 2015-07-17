@@ -139,10 +139,20 @@ public class ViewValidator extends LinearLayout {
                 editText.setBackground(backgrounOrig);
                 viewValidator.setVisibility(INVISIBLE);
                 viewValidator.getTxtError().setText("");
+                error = "";
             }
         }
 
         /**METODOS ABSTRACTOS DE LA CLASE*/
         public abstract boolean validateAfterChange(EditText editText, String text);
+
+        /**METODOS PROPIOS DE LA CLASE*/
+        public boolean validate(){
+            afterTextChanged(null);
+            if(error!=null && error.trim().equalsIgnoreCase(""))
+                return true;
+
+            return false;
+        }
     }
 }

@@ -2,10 +2,7 @@ package app.okiimport.com.okiimport.fragmentos;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -76,6 +74,11 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     private TableLayout tblFRQRepuestos;
 
+    //Validator
+    private ViewValidator.TxtValidator txtValidatorFRQAnno;
+
+    private Map<String, ViewValidator.TxtValidator> mapValidator;
+
     //Modelos
     private List<CheckBox> checkRemover;
     private List<Estado> estados;
@@ -90,6 +93,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     public FrgRegistrarRequerimiento() {
         super(TITULO, R.layout.fragment_frg_registrar_requerimiento);
         checkRemover = new ArrayList<CheckBox>();
+        mapValidator = new LinkedHashMap<String, ViewValidator.TxtValidator>();
     }
 
     /**EVENTOS*/
@@ -236,12 +240,16 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         vvFRQAnno.setImageResource(R.drawable.warning);
         vvFRQAnno.setImageBackgroundColor(Color.TRANSPARENT);
 
-        txtFRQAnno.addTextChangedListener(new ViewValidator.TxtValidator(txtFRQAnno, vvFRQAnno, R.drawable.edittext_error){
+        txtFRQAnno.addTextChangedListener(txtValidatorFRQAnno=new ViewValidator.TxtValidator(txtFRQAnno, vvFRQAnno, R.drawable.edittext_error){
 
             @Override
             public boolean validateAfterChange(EditText editText, String text) {
                 int annoActual = Calendario.getAnno();
-                if(!text.trim().equalsIgnoreCase("") && Integer.valueOf(text)>annoActual) {
+                if(text.trim().equalsIgnoreCase("") ){
+                    error = "Campo obligatorio";
+                    return false;
+                }
+                else if(Integer.valueOf(text)>annoActual) {
                     error = "El año ingresado debe ser menor a "+annoActual;
                     return false;
                 }
@@ -260,6 +268,17 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     @Override
     public boolean validarFormulario() {
+        if(!txtValidatorFRQAnno.validate())
+            return false;
+
+        if(!this.mapValidator.isEmpty()) {
+            for(String key : this.mapValidator.keySet()){
+                ViewValidator.TxtValidator txtValidator = this.mapValidator.get(key);
+                if(txtValidator!=null && !txtValidator.validate())
+                    return false;
+            }
+        }
+
         return true;
     }
 
@@ -278,6 +297,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQMarca.setSelection(0);
 
         this.checkRemover.clear();
+        this.mapValidator.clear();
         agregarRepuesto(true, 1);
     }
 
@@ -378,11 +398,12 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         vvFRQDescripcion.getTxtError().setTextSize(10f);
         //
 
+        ViewValidator.TxtValidator txtValidatorFRQDescripcion;
         EditText txtFRQDescripcion = new EditText(this.getActivity());
         txtFRQDescripcion.setId(chFRQRepuesto.getId() + 10);
         txtFRQDescripcion.setTextColor(Color.BLACK);
         txtFRQDescripcion.setEms(6);
-        txtFRQDescripcion.addTextChangedListener(new ViewValidator.TxtValidator(txtFRQDescripcion, vvFRQDescripcion, R.drawable.edittext_error) {
+        txtFRQDescripcion.addTextChangedListener(txtValidatorFRQDescripcion=new ViewValidator.TxtValidator(txtFRQDescripcion, vvFRQDescripcion, R.drawable.edittext_error) {
             @Override
             public boolean validateAfterChange(EditText editText, String text) {
                 if(text.trim().equalsIgnoreCase("")) {
@@ -413,11 +434,12 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         vvFRQCantidad.getTxtError().setTextSize(10f);
         //
 
+        ViewValidator.TxtValidator nmbValidatorFRQCantidad;
         EditText nmbFRQCantidad = new EditText(this.getActivity());
         nmbFRQCantidad.setId(chFRQRepuesto.getId()+20);
         nmbFRQCantidad.setInputType(InputType.TYPE_CLASS_NUMBER);
         nmbFRQCantidad.setTextColor(Color.BLACK);
-        nmbFRQCantidad.addTextChangedListener(new ViewValidator.TxtValidator(nmbFRQCantidad, vvFRQCantidad, R.drawable.edittext_error) {
+        nmbFRQCantidad.addTextChangedListener(nmbValidatorFRQCantidad=new ViewValidator.TxtValidator(nmbFRQCantidad, vvFRQCantidad, R.drawable.edittext_error) {
             @Override
             public boolean validateAfterChange(EditText editText, String text) {
                 if(!text.trim().equalsIgnoreCase("")) {
@@ -441,6 +463,9 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             }
         });
 
+        this.mapValidator.put("txtValidatorFRQDescripcion"+nroFila, txtValidatorFRQDescripcion);
+        this.mapValidator.put("nmbValidatorFRQCantidad"+nroFila, nmbValidatorFRQCantidad);
+
         llFRQCantidad.addView(nmbFRQCantidad);
         llFRQCantidad.addView(vvFRQCantidad);
         this.insertarObjeto(llFRQCantidad, nroFila, Gravity.LEFT);
@@ -454,7 +479,10 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                 return Integer.valueOf(checkBox2.getId()).compareTo(checkBox1.getId());
             }
         });
-        for(CheckBox checkBox : checkRemover){
+        for (int i = 0; i < checkRemover.size(); i++) {
+            CheckBox checkBox = checkRemover.get(i);
+            this.mapValidator.remove("txtValidatorFRQDescripcion" + checkBox.getId());
+            this.mapValidator.remove("nmbValidatorFRQCantidad" + checkBox.getId());
             this.tabla.removeView((View) checkBox.getParent());
         }
         checkRemover.clear();
