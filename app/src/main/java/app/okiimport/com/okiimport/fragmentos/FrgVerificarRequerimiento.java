@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
     private Spinner spnFVQTipoPersona;
     private SearchView srchFVQCedula;
     private ListView lstFVQRequerimientos;
+    private LinearLayout lnlHeadRequerimientos;
 
     //Atributos
     private Integer totalRequerimientos;
@@ -58,6 +61,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        lstFVQRequerimientos.setAdapter(new AdptRequerimiento(getActivity(), new ArrayList<Requerimiento>()));
         cambiarRequerimientos(query, 0);
         return true;
     }
@@ -78,10 +82,15 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        boolean lastItem = (firstVisibleItem + visibleItemCount == totalItemCount);
-        switch (view.getId()){
-            case R.id.lstFVQRequerimientos : paginarRequerimiento(lastItem); break;
-            default: break;
+        if(view!=null) {
+            boolean lastItem = (firstVisibleItem + visibleItemCount == totalItemCount);
+            switch (view.getId()) {
+                case R.id.lstFVQRequerimientos:
+                    paginarRequerimiento(lastItem);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -91,6 +100,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
         spnFVQTipoPersona = (Spinner) view.findViewById(R.id.spnFVQTipoPersona);
         srchFVQCedula = (SearchView) view.findViewById(R.id.srchFVQCedula);
         lstFVQRequerimientos = (ListView) view.findViewById(R.id.lstFVQRequerimientos);
+        lnlHeadRequerimientos = (LinearLayout) view.findViewById(R.id.lnlHeadRequerimientos);
 
         cargarCombo(R.id.spnFVQTipoPersona, view);
 
@@ -146,7 +156,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
         if(totalRequerimientos!=null){
             Integer totalItemCount = lstFVQRequerimientos.getAdapter().getCount();
             boolean moreRows = totalItemCount < totalRequerimientos;
-            if(lastItem && moreRows && !loading) {
+            if(lastItem && moreRows && !loading && totalItemCount!=0) {
                 loading = true;
                 cambiarRequerimientos(query, Integer.valueOf(totalRequerimientos / totalItemCount));
             }
@@ -167,9 +177,12 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
                     ((AdptRequerimiento) adapter).add(requerimiento);
                 ((AdptRequerimiento) adapter).notifyDataSetChanged();
             }
+            lnlHeadRequerimientos.setVisibility(LinearLayout.VISIBLE);
         }
-        else
+        else {
+            lnlHeadRequerimientos.setVisibility(LinearLayout.INVISIBLE);
             lstFVQRequerimientos.setAdapter(new AdptRequerimiento(getActivity(), requerimientos));
+        }
 
         loading = false;
     }
