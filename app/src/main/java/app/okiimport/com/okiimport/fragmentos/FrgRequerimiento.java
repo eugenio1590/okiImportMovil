@@ -24,6 +24,8 @@ public abstract class FrgRequerimiento extends Fragmento {
 
     protected static Vector<IConexionDAO.ObjetosCombo> tiposPersona;
 
+    protected static Vector<IConexionDAO.ObjetosCombo> tiposRepuesto;
+
     /**
      * Constructor de la Clase
      *
@@ -92,5 +94,13 @@ public abstract class FrgRequerimiento extends Fragmento {
         tiposPersona.add(new IConexionDAO.ObjetosCombo(true, "V"));
         tiposPersona.add(new IConexionDAO.ObjetosCombo(false, "J"));
         return tiposPersona;
+    }
+
+    public static Vector<IConexionDAO.ObjetosCombo> llenarTiposRepuesto(){
+        tiposRepuesto = new Vector<IConexionDAO.ObjetosCombo>();
+        tiposRepuesto.add(new IConexionDAO.ObjetosCombo(null, "Indistinto"));
+        tiposRepuesto.add(new IConexionDAO.ObjetosCombo(true, "Reemplazo"));
+        tiposRepuesto.add(new IConexionDAO.ObjetosCombo(false, "Original"));
+        return tiposRepuesto;
     }
 }

@@ -30,6 +30,7 @@ import java.util.Vector;
 import app.okiimport.com.okiimport.R;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import app.okiimport.com.okiimport.fragmentos.configuracion.TxtValidatorNoEmpty;
+import conexion.IConexionDAO;
 import conexion.IConexionDAO.ObjetosCombo;
 import librerias.ActivityGeneric;
 import librerias.componentes.Calendario;
@@ -64,6 +65,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     private Spinner spnFRQEstado;
     private Spinner spnFRQCiudad;
     private Spinner spnFRQMarca;
+    private Spinner spnFRQTipoRepuesto;
 
     private Button btnFRQAgregar;
     private Button btnFRQEliminar;
@@ -211,6 +213,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQEstado = (Spinner) view.findViewById(R.id.spnFRQEstado);
         spnFRQCiudad = (Spinner) view.findViewById(R.id.spnFRQCiudad);
         spnFRQMarca = (Spinner) view.findViewById(R.id.spnFRQMarca);
+        spnFRQTipoRepuesto = (Spinner) view.findViewById(R.id.spnFRQTipoRepuesto);
 
         btnFRQAgregar = (Button) view.findViewById(R.id.btnFRQAgregar);
         btnFRQEliminar = (Button) view.findViewById(R.id.btnFRQEliminar);
@@ -223,6 +226,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         tblFRQRepuestos = (TableLayout) view.findViewById(R.id.tblFRQRepuestos);
 
         cargarCombo(R.id.spnFRQTipoPersona, view);
+        cargarCombo(R.id.spnFRQTipoRepuesto, view);
 
         spnFRQEstado.setOnItemSelectedListener(this);
         spnFRQCiudad.setOnItemSelectedListener(this);
@@ -282,6 +286,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     protected void cargarCombo(int id, View view) {
         switch (id){
             case R.id.spnFRQTipoPersona: ActivityGeneric.cargarCombo(R.id.spnFRQTipoPersona, view, llenarTiposPersona()); break;
+            case R.id.spnFRQTipoRepuesto: ActivityGeneric.cargarCombo(R.id.spnFRQTipoRepuesto, view, llenarTiposRepuesto()); break;
             default: break;
         }
     }
@@ -346,6 +351,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         spnFRQTipoPersona.setSelection(0);
         spnFRQEstado.setSelection(0);
         spnFRQMarca.setSelection(0);
+        spnFRQTipoRepuesto.setSelection(0);
 
         this.checkRemover.clear();
         this.mapValidator.clear();
@@ -562,11 +568,13 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     private void registrarRequerimiento(Cliente cliente){
         if(cliente!=null) {
+            ObjetosCombo tipoRepuesto = (ObjetosCombo) spnFRQTipoRepuesto.getSelectedItem();
             Requerimiento requerimiento = new Requerimiento(cliente);
             requerimiento.setMarcaVehiculo(marcaVehiculo);
             requerimiento.setModeloV(getGeneric(R.id.txtFRQModelo, String.class));
             requerimiento.setAnnoV(Integer.valueOf(getGeneric(R.id.txtFRQAnno, String.class)));
             requerimiento.setSerialCarroceriaV(getGeneric(R.id.txtFRQSerial, String.class));
+            requerimiento.setTipoRepuesto((Boolean) tipoRepuesto.getId());
 
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("requerimiento", requerimiento);
