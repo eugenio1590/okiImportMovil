@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import librerias.ActivityGeneric;
 import librerias.componentes.Fragmento;
@@ -100,15 +101,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     protected void onPostExecute(Map<String, Object> result)
     {
         //la tarea en segundo plano ya ha terminado. Ocultamos el progreso.
-        try {
-            if(frgProgressBar !=null && closeFrgProgressBar){
-                frgProgressBar.dismiss();
-                frgProgressBar = null;
-            }
-        }
-        catch (Exception e){
-            Log.e("Error in ProgressBar", e.toString());
-        }
+        closeFrgProgressBar();
 
         if(result==null)
             result = new HashMap<String, Object>();
@@ -123,17 +116,50 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         setId(id);
         setIdComponent(idComponent);
         super.execute();
+        setTimeOut();
     }
 
     public void execute(Integer id, Integer idComponent, Map<String, Object> params){
         this.params = params;
         this.execute(id, idComponent);
+        setTimeOut();
     }
 
     /**METODOS ABSTRACTOS DE LA CLASE*/
     protected abstract Map<String, Object> doInBackground(Integer id, Map<String, Object> params);
 
     /**METODOS PROPIOS DE LA CLASE*/
+    //GENERAL
+    private void closeFrgProgressBar(){
+        try {
+            if(frgProgressBar !=null && closeFrgProgressBar){
+                frgProgressBar.dismiss();
+                frgProgressBar = null;
+            }
+        }
+        catch (Exception e){
+            Log.e("Error in ProgressBar", e.toString());
+        }
+    }
+
+    private void setTimeOut(){
+        final AbstractAsyncTask me = this;
+        Thread thread = new Thread(){
+            public void run(){
+                try {
+                    me.get(30000, TimeUnit.MILLISECONDS);  //set time in milisecond(in this timeout is 30 seconds
+
+                } catch (Exception e) {
+                    me.closeFrgProgressBar();
+                    padre.canceledOnExecute(me.id);
+                    me.cancel(true);
+                    Log.e("Error:", e.toString());
+                }
+            }
+        };
+        thread.start();
+    }
+
     //GET
     protected <Y> Y getToJSON(String ruta, String params, Class<?> mapped){
         params = (params==null) ? "" : params;
@@ -212,6 +238,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         String executePreInBackground(Integer id);
         String executePostInBackground(Integer id);
         void executeOnPostExecute(Map<String, Object> result);
+        void canceledOnExecute(Integer id);
         void showFragment(Fragmento fragmento);
     }
 

@@ -1,5 +1,6 @@
 package app.okiimport.com.okiimport;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -77,6 +78,18 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     @Override
     public void executeOnPostExecute(Map<String, Object> result) {
         ((FrgRequerimiento)this.fragmento).onViewProcesar((Integer) result.get("idComponent"), result);
+    }
+
+    @Override
+    public void canceledOnExecute(Integer id){
+        //Se mostrara un mensaje mejor.
+        runOnUiThread(new Runnable(){
+            @SuppressLint("ShowToast")
+            public void run()
+            {
+                ActInicio.this.mostrarMensaje("No se ha establecido una conexion a internet");
+            }
+        });
     }
 
     @Override
