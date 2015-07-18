@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import app.okiimport.com.okiimport.R;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
+import app.okiimport.com.okiimport.fragmentos.configuracion.TxtValidatorNoEmpty;
 import conexion.IConexionDAO.ObjetosCombo;
 import librerias.ActivityGeneric;
 import librerias.componentes.Calendario;
@@ -75,6 +76,11 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     private TableLayout tblFRQRepuestos;
 
     //Validator
+    private TxtValidatorNoEmpty txtValidatorFRQCedula;
+    private TxtValidatorNoEmpty txtValidatorFRQNombre;
+    private TxtValidatorNoEmpty txtValidatorFRQTelefono;
+    private TxtValidatorNoEmpty txtValidatorFRQCorreo;
+    private TxtValidatorNoEmpty txtValidatorFRQModelo;
     private ViewValidator.TxtValidator txtValidatorFRQAnno;
 
     private Map<String, ViewValidator.TxtValidator> mapValidator;
@@ -235,10 +241,24 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     @Override
     protected void setValidator(View view) {
-        ViewValidator vvFRQAnno = (ViewValidator) view.findViewById(R.id.vvFRQAnno);
+        ViewValidator viewValidator;
 
-        vvFRQAnno.setImageResource(R.drawable.warning);
-        vvFRQAnno.setImageBackgroundColor(Color.TRANSPARENT);
+        viewValidator = findViewValidator(R.id.vvFRQCedula, view);
+        txtValidatorFRQCedula = addTxtValidatorNotEmpty(view, R.id.txtFRQCedula, txtValidatorFRQCedula, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQNombre, view);
+        txtValidatorFRQNombre = addTxtValidatorNotEmpty(view, R.id.txtFRQNombre, txtValidatorFRQNombre, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQTelefono, view);
+        txtValidatorFRQTelefono = addTxtValidatorNotEmpty(view, R.id.txtFRQTelefono, txtValidatorFRQTelefono, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQCorreo, view);
+        txtValidatorFRQCorreo = addTxtValidatorNotEmpty(view, R.id.txtFRQCorreo, txtValidatorFRQCorreo, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQModelo, view);
+        txtValidatorFRQModelo = addTxtValidatorNotEmpty(view, R.id.txtFRQModelo, txtValidatorFRQModelo, viewValidator);
+
+        ViewValidator vvFRQAnno = findViewValidator(R.id.vvFRQAnno, view);
 
         txtFRQAnno.addTextChangedListener(txtValidatorFRQAnno=new ViewValidator.TxtValidator(txtFRQAnno, vvFRQAnno, R.drawable.edittext_error){
 
@@ -268,6 +288,19 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     @Override
     public boolean validarFormulario() {
+
+        if(!txtValidatorFRQNombre.validate())
+            return false;
+
+        if(!txtValidatorFRQTelefono.validate())
+            return false;
+
+        if(!txtValidatorFRQCorreo.validate())
+            return false;
+
+        if(!txtValidatorFRQModelo.validate())
+            return false;
+
         if(!txtValidatorFRQAnno.validate())
             return false;
 

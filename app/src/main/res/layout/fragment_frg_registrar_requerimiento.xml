@@ -53,22 +53,29 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="40dp">
 
                     <Spinner
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/spnFRQTipoPersona"
                         android:background="@android:drawable/btn_dropdown" />
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:inputType="number"
                         android:ems="10"
                         android:id="@+id/txtFRQCedula"
                         android:layout_gravity="center"/>
+
                 </LinearLayout>
+
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    class="librerias.componentes.ViewValidator"
+                    android:id="@+id/vvFRQCedula" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -81,6 +88,12 @@
                     android:inputType="textPersonName"
                     android:id="@+id/txtFRQNombre"/>
 
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    class="librerias.componentes.ViewValidator"
+                    android:id="@+id/vvFRQNombre" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -92,6 +105,12 @@
                     android:inputType="phone"
                     android:id="@+id/txtFRQTelefono"/>
 
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    class="librerias.componentes.ViewValidator"
+                    android:id="@+id/vvFRQTelefono" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -102,6 +121,12 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/txtFRQCorreo"
                     android:inputType="textEmailAddress" />
+
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    class="librerias.componentes.ViewValidator"
+                    android:id="@+id/vvFRQCorreo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -174,6 +199,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/txtFRQModelo"/>
+
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    class="librerias.componentes.ViewValidator"
+                    android:id="@+id/vvFRQModelo" />
 
                 <TextView
                     android:layout_width="wrap_content"
