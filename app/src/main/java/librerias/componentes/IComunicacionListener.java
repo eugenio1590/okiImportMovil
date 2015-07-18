@@ -12,9 +12,9 @@ public interface IComunicacionListener {
 	void onClickBoton(View v);
 	
 	//2. Evento Click sobre algun elemento de la lista emergente
-	void onClickSelected(String obj, int pos);
+	void onClickSelected(Object obj, int pos);
 	
 	//3. Evento para Cancelar el Fragmento
 	void cancelar();
-	
+
 }

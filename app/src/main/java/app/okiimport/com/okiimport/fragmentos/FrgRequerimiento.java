@@ -9,7 +9,6 @@ import android.widget.EditText;
 import java.util.Map;
 import java.util.Vector;
 
-import app.okiimport.com.okiimport.ActRequerimiento;
 import app.okiimport.com.okiimport.R;
 import app.okiimport.com.okiimport.fragmentos.configuracion.TxtValidatorNoEmpty;
 import conexion.IConexionDAO;
@@ -40,7 +39,7 @@ public abstract class FrgRequerimiento extends Fragmento {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
-            ((ActRequerimiento) activity).setmTitle(titulo);
+            ((app.okiimport.com.okiimport.FrgRequerimiento) activity).setmTitle(titulo);
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");

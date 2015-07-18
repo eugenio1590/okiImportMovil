@@ -3,10 +3,12 @@ package app.okiimport.com.okiimport.fragmentos;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,7 +28,9 @@ import librerias.ActivityGeneric;
 import modelo.Requerimiento;
 import servicio.ServiceRequerimiento;
 
-public class FrgVerificarRequerimiento extends FrgRequerimiento implements SearchView.OnQueryTextListener, AbsListView.OnScrollListener {
+public class FrgVerificarRequerimiento extends FrgRequerimiento
+        implements SearchView.OnQueryTextListener, AbsListView.OnScrollListener,
+                    AdapterView.OnItemClickListener {
 
     public static final String TITULO = EFrgTitulos.FRG_VEFIRICAR_REQUERIMIENTO.getValue();
 
@@ -94,6 +98,12 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Requerimiento requerimiento = (Requerimiento) ((ListView) parent).getItemAtPosition(position);
+        listener.onClickSelected(requerimiento, position);
+    }
+
     /**METODOS OVERRIDE*/
     @Override
     protected void setListener(View view) {
@@ -106,6 +116,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
         srchFVQCedula.setOnQueryTextListener(this);
         lstFVQRequerimientos.setOnScrollListener(this);
+        lstFVQRequerimientos.setOnItemClickListener(this);
     }
 
     @Override
@@ -186,6 +197,7 @@ public class FrgVerificarRequerimiento extends FrgRequerimiento implements Searc
 
         loading = false;
     }
+
 
 
 }

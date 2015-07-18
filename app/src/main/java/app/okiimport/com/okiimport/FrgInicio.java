@@ -10,20 +10,22 @@ import app.okiimport.com.okiimport.fragmentos.*;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import librerias.componentes.Fragmento;
 import librerias.componentes.IComunicacionListener;
+import modelo.Requerimiento;
 import servicio.AbstractAsyncTask;
 import servicio.AbstractAsyncTask.IComunicatorBackgroundTask;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Vector;
 
-public class ActInicio extends ActRequerimiento implements IComunicacionListener, IComunicatorBackgroundTask {
+public class FrgInicio extends FrgRequerimiento implements IComunicacionListener, IComunicatorBackgroundTask {
 
     //GUI
     private LinearLayout llARQInicio;
     private TextView txtARQMsjError;
 
     /**CONSTRUCTOR*/
-    public ActInicio() {
+    public FrgInicio() {
         super(R.id.navigation_drawer, R.id.drawer_layout, R.menu.act_inicio);
         this.fragmentos = new ArrayList<String>();
         this.fragmentos.addAll(EFrgTitulos.titulosPortalWeb());
@@ -66,8 +68,13 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     }
 
     @Override
-    public void onClickSelected(String obj, int pos) {
+    public void onClickSelected(Object obj, int pos) {
+        Vector<String[]> valores = new Vector<String[]>();
 
+        if(obj instanceof Requerimiento){
+            valores.add(new String[]{"idRequerimiento", String.valueOf(((Requerimiento) obj).getIdRequerimiento())});
+            this.redireccionarValores(contexto, ActDetalleRequerimiento.class, valores, false);
+        }
     }
 
     @Override
@@ -94,7 +101,7 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
 
     @Override
     public void executeOnPostExecute(Map<String, Object> result) {
-        ((FrgRequerimiento)this.fragmento).onViewProcesar((Integer) result.get("idComponent"), result);
+        ((app.okiimport.com.okiimport.fragmentos.FrgRequerimiento)this.fragmento).onViewProcesar((Integer) result.get("idComponent"), result);
     }
 
     @Override

@@ -1,12 +1,9 @@
 package app.okiimport.com.okiimport;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
@@ -40,7 +37,7 @@ public class ActSplashScreen extends ActivityGeneric {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(ActSplashScreen.this, ActInicio.class);
+                Intent i = new Intent(ActSplashScreen.this, FrgInicio.class);
                 startActivity(i);
 
                 // close this activity

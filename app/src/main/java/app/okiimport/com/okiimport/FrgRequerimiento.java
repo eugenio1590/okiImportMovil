@@ -17,7 +17,7 @@ import librerias.componentes.Fragmento;
 import static app.okiimport.com.okiimport.NavigationDrawerFragment.*;
 import static app.okiimport.com.okiimport.fragmentos.FrgRequerimiento.*;
 
-public abstract class ActRequerimiento extends FragmentoActivity
+public abstract class FrgRequerimiento extends FragmentoActivity
         implements NavigationDrawerCallbacks, OnFragmentInteractionListener {
 
     protected Menu menu;
@@ -48,7 +48,7 @@ public abstract class ActRequerimiento extends FragmentoActivity
      */
     protected Fragmento fragmento;
 
-    public ActRequerimiento(Integer navigationDrawer, Integer drawerLayout, Integer menuActiv){
+    public FrgRequerimiento(Integer navigationDrawer, Integer drawerLayout, Integer menuActiv){
         this.navigationDrawer = navigationDrawer;
         this.drawerLayout = drawerLayout;
         this.menuActiv = menuActiv;
