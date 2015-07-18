@@ -63,6 +63,8 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
     protected boolean closeFrgProgressBar;
 
+    protected boolean canceled;
+
     /**Constructor
      * @param padre: Activity que instancio el BackgroundTask
      * @param domain: Representa la clase del dominio
@@ -78,6 +80,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
     @Override
     protected void onPreExecute()
     {
+        canceled=false;
         //mostramos el círculo de progreso
         if(frgProgressBar ==null) {
             frgProgressBar = ProgressDialog.show((Context) padre, "", "Loading...");
@@ -99,8 +102,7 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
                 Log.e("Error in Service", e.toString());
 
                 if(e instanceof org.springframework.web.client.ResourceAccessException) {
-                    padre.canceledOnExecute(id, new Exception(MsjError.NOT_FOUND_SERVER.getTexto()));
-                    cancel(true);
+                    canceled = true;
                 }
             }
         }
@@ -116,7 +118,11 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         if(result==null)
             result = new HashMap<String, Object>();
 
-        if(padre!=null) {
+        if(canceled){
+            padre.canceledOnExecute(id, new Exception(MsjError.NOT_FOUND_SERVER.getTexto()));
+            cancel(true);
+        }
+        else if(padre!=null) {
             result.put("idComponent", this.idComponent);
             padre.executeOnPostExecute(result);
         }
