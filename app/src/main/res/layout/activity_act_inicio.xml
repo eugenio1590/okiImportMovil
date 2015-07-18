@@ -15,21 +15,24 @@
         <!-- Linear Layout para la mostrar la Conectividad o no con Internet-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/invisible"
             android:orientation="horizontal"
             android:gravity="center"
             android:visibility="invisible"
-            android:id="@+id/llARQInicio">
+            android:id="@+id/llARQInicio"
+            style="@style/MsjError">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_info_details"/>
+                android:src="@android:drawable/ic_menu_info_details"
+                style="@style/MsjError.Image" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtARQMsjError"/>
+                android:id="@+id/txtARQMsjError"
+                style="@style/MsjError.Message" />
 
         </LinearLayout>
 

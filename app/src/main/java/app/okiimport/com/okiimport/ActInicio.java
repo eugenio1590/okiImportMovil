@@ -147,14 +147,15 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
 
     /**METODOS PROPIOS DE LA CLASE*/
     private void configurarTextoMensaje(String texto, int visible){
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         if(visible == LinearLayout.VISIBLE){
-            llARQInicio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            llARQInicio.setVisibility(visible);
             txtARQMsjError.setText(texto);
         }
         else if(visible == LinearLayout.INVISIBLE){
-            llARQInicio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0*LinearLayout.LayoutParams.WRAP_CONTENT));
-            llARQInicio.setVisibility(visible);
+            height=0*height;
         }
+
+        llARQInicio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height));
+        llARQInicio.setVisibility(visible);
     }
 }

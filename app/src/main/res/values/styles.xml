@@ -48,4 +48,16 @@
     <style name="BaseListTable" parent="BaseHeadTable">
 
     </style>
+
+    <style name="MsjError">
+        <item name="android:background">@color/Naranja</item>
+    </style>
+
+    <style name="MsjError.Image">
+
+    </style>
+
+    <style name="MsjError.Message">
+        <item name="android:textColor">@color/Blanco</item>
+    </style>
 </resources>

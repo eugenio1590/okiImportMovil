@@ -42,7 +42,7 @@ public class ViewValidator extends LinearLayout {
     private void configurar(Context contex) {
         density = contex.getResources().getDisplayMetrics().density;
 
-        this.setLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        this.setLayoutParams(LayoutParams.MATCH_PARENT, 0*LayoutParams.WRAP_CONTENT);
         this.setPadding(0,0,0, (int)(10*density));
         this.setOrientation(HORIZONTAL);
         this.setVisibility(INVISIBLE);
@@ -133,11 +133,13 @@ public class ViewValidator extends LinearLayout {
                 editText.setBackground(editText.getContext().getResources().getDrawable(backgroundError));
                 editText.invalidate();
                 viewValidator.setVisibility(VISIBLE);
+                viewValidator.setLHeight(LayoutParams.WRAP_CONTENT);
                 viewValidator.getTxtError().setText(error);
             }
             else {
                 editText.setBackground(backgrounOrig);
                 viewValidator.setVisibility(INVISIBLE);
+                viewValidator.setLHeight(0*LayoutParams.WRAP_CONTENT);
                 viewValidator.getTxtError().setText("");
                 error = "";
             }
