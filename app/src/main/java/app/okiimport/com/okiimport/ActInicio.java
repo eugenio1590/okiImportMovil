@@ -1,20 +1,26 @@
 package app.okiimport.com.okiimport;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import app.okiimport.com.okiimport.fragmentos.*;
 import app.okiimport.com.okiimport.fragmentos.configuracion.EFrgTitulos;
 import librerias.componentes.Fragmento;
 import librerias.componentes.IComunicacionListener;
+import servicio.AbstractAsyncTask;
 import servicio.AbstractAsyncTask.IComunicatorBackgroundTask;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class ActInicio extends ActRequerimiento implements IComunicacionListener, IComunicatorBackgroundTask {
+
+    //GUI
+    private LinearLayout llARQInicio;
+    private TextView txtARQMsjError;
 
     /**CONSTRUCTOR*/
     public ActInicio() {
@@ -29,6 +35,11 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_inicio);
         super.createNavigation();
+
+        llARQInicio = (LinearLayout) findViewById(R.id.llARQInicio);
+        txtARQMsjError = (TextView) findViewById(R.id.txtARQMsjError);
+        if(!isConnectNetwork())
+            configurarTextoMensaje(AbstractAsyncTask.MsjError.TIME_OUT.getTexto(), LinearLayout.VISIBLE);
     }
 
     @Override
@@ -67,6 +78,12 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     //2. IComunicatorBackgroundTask
     @Override
     public String executePreInBackground(Integer id) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                if(llARQInicio!=null)
+                    configurarTextoMensaje(null, LinearLayout.INVISIBLE);
+            }
+        });
         return null;
     }
 
@@ -81,15 +98,19 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     }
 
     @Override
-    public void canceledOnExecute(Integer id){
+    public void canceledOnExecute(Integer id, final Exception e){
         //Se mostrara un mensaje mejor.
         runOnUiThread(new Runnable(){
-            @SuppressLint("ShowToast")
-            public void run()
-            {
-                ActInicio.this.mostrarMensaje("No se ha establecido una conexion a internet");
+            public void run() {
+                if (llARQInicio != null && txtARQMsjError != null)
+                    configurarTextoMensaje(e.getMessage(), LinearLayout.VISIBLE);
             }
         });
+    }
+
+    @Override
+    public boolean isConnectNetwork(){
+        return super.isConnectNetwork();
     }
 
     @Override
@@ -98,6 +119,7 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
         fragmento.show(fm, "fragment_"+Math.random());
     }
 
+    /**METODOS OVERRIDE*/
     @Override
     public <T> T getGeneric(int id, Class<T> tClass) {
         return null;
@@ -121,5 +143,18 @@ public class ActInicio extends ActRequerimiento implements IComunicacionListener
     @Override
     public void setListeners() {
 
+    }
+
+    /**METODOS PROPIOS DE LA CLASE*/
+    private void configurarTextoMensaje(String texto, int visible){
+        if(visible == LinearLayout.VISIBLE){
+            llARQInicio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            llARQInicio.setVisibility(visible);
+            txtARQMsjError.setText(texto);
+        }
+        else if(visible == LinearLayout.INVISIBLE){
+            llARQInicio.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0*LinearLayout.LayoutParams.WRAP_CONTENT));
+            llARQInicio.setVisibility(visible);
+        }
     }
 }

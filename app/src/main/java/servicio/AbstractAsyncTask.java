@@ -2,9 +2,14 @@ package servicio;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -92,6 +97,11 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
             {
                 e.printStackTrace();
                 Log.e("Error in Service", e.toString());
+
+                if(e instanceof org.springframework.web.client.ResourceAccessException) {
+                    padre.canceledOnExecute(id, new Exception(MsjError.NOT_FOUND_SERVER.getTexto()));
+                    cancel(true);
+                }
             }
         }
         return result;
@@ -112,34 +122,33 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         }
     }
 
-    public void execute(Integer id, Integer idComponent){
-        setId(id);
-        setIdComponent(idComponent);
-        super.execute();
-        setTimeOut();
-    }
-
-    public void execute(Integer id, Integer idComponent, Map<String, Object> params){
-        this.params = params;
-        this.execute(id, idComponent);
-        setTimeOut();
-    }
-
     /**METODOS ABSTRACTOS DE LA CLASE*/
     protected abstract Map<String, Object> doInBackground(Integer id, Map<String, Object> params);
 
     /**METODOS PROPIOS DE LA CLASE*/
     //GENERAL
-    private void closeFrgProgressBar(){
-        try {
-            if(frgProgressBar !=null && closeFrgProgressBar){
-                frgProgressBar.dismiss();
-                frgProgressBar = null;
-            }
+    public void execute(Integer id, Integer idComponent){
+        if(isConnectNetwork()) {
+            setId(id);
+            setIdComponent(idComponent);
+            super.execute();
+            setTimeOut();
         }
-        catch (Exception e){
-            Log.e("Error in ProgressBar", e.toString());
+    }
+
+    public void execute(Integer id, Integer idComponent, Map<String, Object> params){
+        if(isConnectNetwork()) {
+            this.params = params;
+            this.execute(id, idComponent);
+            setTimeOut();
         }
+    }
+
+    private boolean isConnectNetwork(){
+        boolean connect = padre.isConnectNetwork();
+        if(!connect)
+            padre.canceledOnExecute(id, new Exception(MsjError.NOT_CONNECTION.getTexto()));
+        return connect;
     }
 
     private void setTimeOut(){
@@ -151,13 +160,28 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
 
                 } catch (Exception e) {
                     me.closeFrgProgressBar();
-                    padre.canceledOnExecute(me.id);
+                    if(e instanceof java.util.concurrent.TimeoutException)
+                        padre.canceledOnExecute(me.id, new Exception(MsjError.TIME_OUT.getTexto()));
+                    else
+                        padre.canceledOnExecute(me.id, e);
                     me.cancel(true);
                     Log.e("Error:", e.toString());
                 }
             }
         };
         thread.start();
+    }
+
+    private void closeFrgProgressBar(){
+        try {
+            if(frgProgressBar !=null && closeFrgProgressBar){
+                frgProgressBar.dismiss();
+                frgProgressBar = null;
+            }
+        }
+        catch (Exception e){
+            Log.e("Error in ProgressBar", e.toString());
+        }
     }
 
     //GET
@@ -238,10 +262,27 @@ public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<Str
         String executePreInBackground(Integer id);
         String executePostInBackground(Integer id);
         void executeOnPostExecute(Map<String, Object> result);
-        void canceledOnExecute(Integer id);
+        void canceledOnExecute(Integer id, Exception e);
+        boolean isConnectNetwork();
         void showFragment(Fragmento fragmento);
     }
 
+    //Enum para el tratamiento de errores
+    public enum MsjError{
+        NOT_CONNECTION("No se ha encontrado la conexion de internet"),
+        TIME_OUT("El servidor web ha tardado en responder"),
+        NOT_FOUND_SERVER("No se ha contrado el servidor web");
+
+        private String texto;
+
+        MsjError(String texto){
+            this.texto = texto;
+        }
+
+        public String getTexto(){
+            return this.texto;
+        }
+    }
     // Using Android's base64 libraries. This can be replaced with any base64 library.
     private class ByteArrayToBase64TypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
 

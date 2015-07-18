@@ -311,6 +311,24 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                     return false;
             }
         }
+        else //Mostrar Mensaje
+        /**
+         //9. Mostrar Mensaje Toast
+         protected void mostrarToast(String mensaje){
+
+         Toast toast = Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT);
+         View textView = toast.getView();
+         LinearLayout icono = new LinearLayout(getApplicationContext());
+         icono.setOrientation(LinearLayout.HORIZONTAL);
+         ImageView view = new ImageView(getApplicationContext());
+         view.setImageResource(android.R.drawable.ic_menu_info_details);
+         icono.addView(view);
+         icono.addView(textView);
+         toast.setView(icono);
+         toast.show();
+         }
+         * */
+            return false;
 
         return true;
     }
