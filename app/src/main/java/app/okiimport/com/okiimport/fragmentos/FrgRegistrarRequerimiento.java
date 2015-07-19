@@ -340,6 +340,10 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
     @Override
     public void limpiar() {
+        View view = getView();
+
+        limpiarRestricciones(view);
+
         limpiarGeneric(R.id.txtFRQCedula);
         limpiarGeneric(R.id.txtFRQNombre);
         limpiarGeneric(R.id.txtFRQCorreo);
@@ -347,6 +351,8 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         limpiarGeneric(R.id.txtFRQModelo);
         limpiarGeneric(R.id.txtFRQAnno);
         limpiarGeneric(R.id.txtFRQSerial);
+
+        setValidator(view);
 
         spnFRQTipoPersona.setSelection(0);
         spnFRQEstado.setSelection(0);
@@ -422,6 +428,21 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             EditText txtFRQTelefono = (EditText) getView().findViewById(R.id.txtFRQTelefono);
             txtFRQTelefono.setText(cliente.getTelefono());
         }
+    }
+
+    private void limpiarRestricciones(View view){
+
+        txtValidatorFRQCedula = removeTxtValidator(view, R.id.txtFRQCedula, txtValidatorFRQCedula);
+
+        txtValidatorFRQNombre = removeTxtValidator(view, R.id.txtFRQNombre, txtValidatorFRQNombre);
+
+        txtValidatorFRQTelefono = removeTxtValidator(view, R.id.txtFRQTelefono, txtValidatorFRQTelefono);
+
+        txtValidatorFRQCorreo = removeTxtValidator(view, R.id.txtFRQCorreo, txtValidatorFRQCorreo);
+
+        txtValidatorFRQModelo = removeTxtValidator(view, R.id.txtFRQModelo, txtValidatorFRQModelo);
+
+        txtValidatorFRQAnno = removeTxtValidator(view, R.id.txtFRQAnno, txtValidatorFRQAnno);
     }
 
     private void agregarRepuesto(boolean withEncabezado, int nroFila){

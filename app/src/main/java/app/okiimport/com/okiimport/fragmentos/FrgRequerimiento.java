@@ -88,6 +88,12 @@ public abstract class FrgRequerimiento extends Fragmento {
         return validator;
     }
 
+    protected <T extends ViewValidator.TxtValidator> T removeTxtValidator(View view, int id, ViewValidator.TxtValidator validator){
+        EditText txtView = (EditText) view.findViewById(id);
+        txtView.removeTextChangedListener(validator);
+        return (T) null;
+    }
+
     /**METODOS ESTATICOS DE LA CLASE*/
     public static Vector<IConexionDAO.ObjetosCombo> llenarTiposPersona(){
         tiposPersona = new Vector<IConexionDAO.ObjetosCombo>();
