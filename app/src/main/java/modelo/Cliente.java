@@ -64,4 +64,9 @@ public class Cliente extends Persona implements Serializable {
 		return null;
 	}
 
+    /**METODOS PROPIOS DE LA CLASE*/
+    public String cedulaCompleta(){
+        return this.cedula.substring(0, 1)+"-"+this.cedula.substring(1, this.cedula.length());
+    }
+
 }

@@ -29,7 +29,7 @@
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="20px"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Datos Personales"
+                    android:text="@string/datos_personales"
                     android:textColor="@color/Blanco"/>
 
             </LinearLayout>
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="103dp"
                     android:layout_height="match_parent"
-                    android:text="Cedula/Rif *"
+                    android:text="@string/cedula"
                     android:layout_gravity="left|top" />
 
                 <LinearLayout
@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre (s) / Razón Social *" />
+                    android:text="@string/nombre_razon_social" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -97,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Telefono *" />
+                    android:text="@string/telefono" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correo *" />
+                    android:text="@string/correo" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -131,7 +131,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Estado *" />
+                    android:text="@string/estado" />
 
                 <Spinner
                     android:layout_width="match_parent"
@@ -143,7 +143,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ciudad *" />
+                    android:text="@string/ciudad" />
 
                 <Spinner
                     android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20px"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Datos del Vehiculo"
+                    android:text="@string/datos_vehiculo"
                     android:textColor="@color/Blanco"/>
             </LinearLayout>
 
@@ -181,7 +181,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Marca *" />
+                    android:text="@string/marca" />
 
                 <Spinner
                     android:layout_width="match_parent"
@@ -193,7 +193,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Modelo *" />
+                    android:text="@string/modelo" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -209,7 +209,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Año *" />
+                    android:text="@string/anno" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -227,7 +227,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Serial de Carroceria" />
+                    android:text="@string/serial_carroceria" />
 
                 <EditText
                     android:layout_width="fill_parent"
@@ -238,7 +238,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tipo de Repuesto" />
+                    android:text="@string/tipo_repuesto" />
 
                 <Spinner
                     android:layout_width="match_parent"
@@ -259,7 +259,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Datos de Repuestos"
+                    android:text="@string/datos_repuestos"
                     android:layout_marginLeft="20px"
                     android:textColor="@color/Blanco" />
             </LinearLayout>
@@ -283,7 +283,7 @@
                         style="@style/BaseButton.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Agregar"
+                        android:text="@string/agregar"
                         android:id="@+id/btnFRQAgregar"
                         android:layout_column="9"
                         android:layout_row="0" />
@@ -292,7 +292,7 @@
                         style="@style/BaseButton.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Eliminar"
+                        android:text="@string/eliminar"
                         android:id="@+id/btnFRQEliminar"
                         android:layout_column="10"
                         android:layout_row="0" />
@@ -321,7 +321,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="* Campos Obligatorios"
+                    android:text="@string/campos_obligatorios"
                     android:textColor="@color/Rojo"
                     android:layout_row="0"
                     android:layout_column="0" />
@@ -329,7 +329,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Limpiar"
+                    android:text="@string/limpiar"
                     android:id="@+id/btnFRQLimpiar"
                     style="@style/BaseButton"
                     android:layout_row="0"
@@ -338,7 +338,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enviar"
+                    android:text="@string/enviar"
                     android:id="@+id/btnFRQEnviar"
                     android:layout_row="0"
                     android:layout_column="10"

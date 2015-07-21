@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Nombre de la Aplicacion -->
     <string name="app_name">OkiImport</string>
+
+    <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Menu -->
     <string name="action_settings">Settings</string>
-    <string name="title_activity_act_detalle_requerimiento">Detalle del Requerimiento</string>
-    <string name="hello_world">Hello world!</string>
+
+    <!-- Titulos de los Activity -->
+    <string name="title_activity_act_detalle_requerimiento">Requerimiento Nro. </string>
+
+    <!-- Valor para los formularios -->
+        <!-- Botones -->
+    <string name="agregar">Agregar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="campos_obligatorios">* Campos Obligatorios</string>
+    <string name="limpiar">Limpiar</string>
+    <string name="enviar">Enviar</string>
+    <string name="cerrar">Cerrar</string>
+
+        <!-- Titulos de las secciones de los Formularios -->
+    <string name="datos_personales">Datos Personales</string>
+    <string name="datos_vehiculo">Datos del Vehiculo</string>
+    <string name="datos_repuestos">Datos de Repuestos</string>
+
+        <!-- Campos -->
+    <string name="cedula">Cedula/Rif *</string>
+    <string name="nombre_razon_social">Nombre (s) / Razón Social *</string>
+    <string name="telefono">Telefono *</string>
+    <string name="correo">Correo *</string>
+    <string name="estado">Estado *</string>
+    <string name="ciudad">Ciudad *</string>
+
+    <string name="marca">Marca *</string>
+    <string name="modelo">Modelo *</string>
+    <string name="anno">Año *</string>
+    <string name="serial_carroceria">Serial de Carroceria</string>
+    <string name="tipo_repuesto">Tipo de Repuesto</string>
 
 </resources>

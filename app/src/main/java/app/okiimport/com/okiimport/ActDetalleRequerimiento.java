@@ -1,22 +1,47 @@
 package app.okiimport.com.okiimport;
 
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-import librerias.ActivityGeneric;
+import com.android.internal.util.Predicate;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import app.okiimport.com.okiimport.fragmentos.FrgRequerimiento;
+import conexion.IConexionDAO;
+import librerias.componentes.Fragmento;
+import modelo.Cliente;
+import modelo.Requerimiento;
+import servicio.AbstractAsyncTask;
+import servicio.ServiceRequerimiento;
 
 
-public class ActDetalleRequerimiento extends ActivityGeneric {
+public class ActDetalleRequerimiento extends ActRequerimiento implements AbstractAsyncTask.IComunicatorBackgroundTask {
 
+    private ServiceRequerimiento serviceRequerimiento;
+
+    /**EVENTOS*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_detalle_requerimiento);
 
+        Integer idRequerimiento = Integer.valueOf(extraerDato("idRequerimiento"));
+
+        setTitle(getResources().getString(R.string.title_activity_act_detalle_requerimiento)+idRequerimiento);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        setListeners();
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("idRequerimiento", idRequerimiento);
+        serviceRequerimiento = new ServiceRequerimiento(this, true);
+        serviceRequerimiento.execute(3, 1, params);
+
     }
 
 
@@ -42,8 +67,50 @@ public class ActDetalleRequerimiento extends ActivityGeneric {
     }
 
     @Override
-    public void setListeners() {
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnAVRCerrar: finish(); break;
+            default: break;
+        }
+    }
 
+    /**INTERFACE*/
+    //1. IComunicatorBackgroundTask
+    @Override
+    public String executePreInBackground(Integer id) {
+        return null;
+    }
+
+    @Override
+    public String executePostInBackground(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void executeOnPostExecute(Map<String, Object> result) {
+        onViewProcesar((Integer) result.get("idComponent"), result);
+    }
+
+    @Override
+    public void canceledOnExecute(Integer id, Exception e) {
+
+    }
+
+    @Override
+    public void showFragment(Fragmento fragmento) {
+
+    }
+
+    @Override
+    public boolean isConnectNetwork(){
+        return super.isConnectNetwork();
+    }
+
+    /**METODOS OVERRIDE*/
+    @Override
+    public void setListeners() {
+        this.boton = (Button) findViewById(R.id.btnAVRCerrar);
+        this.boton.setOnClickListener(this);
     }
 
     @Override
@@ -57,7 +124,50 @@ public class ActDetalleRequerimiento extends ActivityGeneric {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onViewProcesar(Integer idView, Map<String, Object> result){
+        switch (idView){
+            case 1: cargarRequerimiento((Requerimiento) result.get("requerimiento")); break;
+            default: break;
+        }
+    }
 
+    /**METODOS PROPIOS DE LA CLASE*/
+    private void cargarRequerimiento(Requerimiento requerimiento) {
+        if(requerimiento!=null){
+            Cliente cliente = requerimiento.getCliente();
+            llenarText(R.id.lblAVRCedula, cliente.cedulaCompleta());
+            llenarText(R.id.lblAVRNombre, cliente.getNombre());
+            llenarText(R.id.lblAVRTelefono, cliente.getTelefono());
+            llenarText(R.id.lblAVRCorreo, cliente.getCorreo());
+            llenarText(R.id.lblAVREstado, cliente.getCiudad().getEstado().getNombre());
+            llenarText(R.id.lblAVRCiudad, cliente.getCiudad().getNombre());
+
+            llenarText(R.id.lblAVRMarca, requerimiento.getMarcaVehiculo().getNombre());
+            llenarText(R.id.lblAVRModelo, requerimiento.getModeloV());
+            llenarText(R.id.lblAVRAnno, String.valueOf(requerimiento.getAnnoV()));
+
+            String serialCarroceria = requerimiento.getSerialCarroceriaV();
+            llenarText(R.id.lblAVRSerial, (serialCarroceria!=null) ? serialCarroceria : "No Especificado");
+
+            final Boolean tipoRepuestoRequerimiento = requerimiento.getTipoRepuesto();
+            if(tipoRepuestoRequerimiento!=null) {
+                IConexionDAO.ObjetosCombo tipoRespuesto = findObject(new Predicate<IConexionDAO.ObjetosCombo>() {
+                    @Override
+                    public boolean apply(IConexionDAO.ObjetosCombo objetoCombo) {
+                        return (objetoCombo.getId() == tipoRepuestoRequerimiento);
+                    }
+                }, FrgRequerimiento.llenarTiposRepuesto());
+
+                llenarText(R.id.lblAVRTipoRepuesto, tipoRespuesto.toString());
+            }
+            else
+                llenarText(R.id.lblAVRTipoRepuesto, "No Especificado");
+
+        }
+    }
+
+    private void llenarText(int id, String text){
+        TextView lblView = (TextView) findViewById(id);
+        lblView.setText(lblView.getText().toString()+" "+text);
     }
 }

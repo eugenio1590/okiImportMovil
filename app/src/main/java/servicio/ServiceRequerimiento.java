@@ -26,7 +26,8 @@ public class ServiceRequerimiento extends AbstractAsyncTask {
         Map<String, Object> result = null;
         switch (id){
             case 1 : result = registrarRequerimiento(params); break;
-            case 2: result = consultarRequerimiento(params); break;
+            case 2: result = consultarRequerimientos(params); break;
+            case 3: result = consultarRequerimiento(params); break;
         }
         return result;
     }
@@ -43,7 +44,7 @@ public class ServiceRequerimiento extends AbstractAsyncTask {
         return result;
     }
 
-    private Map<String,Object> consultarRequerimiento(Map params) {
+    private Map<String,Object> consultarRequerimientos(Map params) {
         Map<String, Object> result = null;
         String cedula = (String) params.get("cedula");
         Integer pagina = (Integer) params.get("pagina");
@@ -57,6 +58,20 @@ public class ServiceRequerimiento extends AbstractAsyncTask {
                 Integer total = (Integer) result.get("total");
                 result.put("total", total);
                 result.put("requerimientos", requerimientos);
+            }
+        }
+        return result;
+    }
+
+    private Map<String, Object> consultarRequerimiento(Map params){
+        Map<String, Object> result = null;
+        Integer idRequerimiento = (Integer) params.get("idRequerimiento");
+        if(idRequerimiento!=null){
+            result = (Map<String, Object>) getToJSON("/gestionTransacciones/requerimientos/" + idRequerimiento , "", Map.class);
+            if (result != null) {
+                Map<String, Object> mapModel = (Map<String, Object>) result.get("requerimiento");
+                Requerimiento requerimiento = (Requerimiento) getToJSONObject(Requerimiento.class, mapModel);
+                result.put("requerimiento", requerimiento);
             }
         }
         return result;
