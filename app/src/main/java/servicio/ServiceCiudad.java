@@ -3,7 +3,6 @@ package servicio;
 import java.util.List;
 import java.util.Map;
 
-import librerias.ActivityGeneric;
 import modelo.Ciudad;
 
 public final class ServiceCiudad extends AbstractAsyncTask {
@@ -12,6 +11,7 @@ public final class ServiceCiudad extends AbstractAsyncTask {
      * Constructor
      *
      * @param padre : Activity que instancio el BackgroundTask
+     * @param closeFrgProgressBar
      */
     public ServiceCiudad(IComunicatorBackgroundTask padre, boolean closeFrgProgressBar) {
         super(padre, Ciudad.class, closeFrgProgressBar);

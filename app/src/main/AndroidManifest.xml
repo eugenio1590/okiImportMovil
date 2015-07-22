@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".ActDetalleRequerimiento"
-            android:label="@string/title_activity_act_detalle_requerimiento">
+            android:label="@string/title_activity_act_detalle_requerimiento"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

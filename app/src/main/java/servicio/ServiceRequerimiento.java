@@ -3,13 +3,8 @@ package servicio;
 import java.util.List;
 import java.util.Map;
 
-import librerias.ActivityGeneric;
-import modelo.Ciudad;
 import modelo.Requerimiento;
 
-/**
- * Created by Usuario on 28/06/2015.
- */
 public class ServiceRequerimiento extends AbstractAsyncTask {
     /**
      * Constructor

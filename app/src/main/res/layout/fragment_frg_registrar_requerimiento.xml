@@ -227,7 +227,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/serial_carroceria" />
+                    android:text="@string/serial_carroceria_no" />
 
                 <EditText
                     android:layout_width="fill_parent"

@@ -4,10 +4,7 @@ import java.util.Map;
 
 import modelo.Cliente;
 
-/**
- * Created by Usuario on 28/06/2015.
- */
-public class ServiceCliente extends AbstractAsyncTask {
+public final class ServiceCliente extends AbstractAsyncTask {
     /**
      * Constructor
      *

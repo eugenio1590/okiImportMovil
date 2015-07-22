@@ -1,29 +1,42 @@
 package app.okiimport.com.okiimport;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.android.internal.util.Predicate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import app.okiimport.com.okiimport.fragmentos.FrgRequerimiento;
 import conexion.IConexionDAO;
 import librerias.componentes.Fragmento;
 import modelo.Cliente;
+import modelo.DetalleRequerimiento;
 import modelo.Requerimiento;
 import servicio.AbstractAsyncTask;
+import servicio.ServiceDetalleRequerimiento;
 import servicio.ServiceRequerimiento;
 
 
 public class ActDetalleRequerimiento extends ActRequerimiento implements AbstractAsyncTask.IComunicatorBackgroundTask {
 
+    //Servicios
     private ServiceRequerimiento serviceRequerimiento;
+    private ServiceDetalleRequerimiento serviceDetalleRequerimiento;
+
+    //GUI
+    private TableLayout tblAVRRepuestos;
 
     /**EVENTOS*/
     @Override
@@ -39,11 +52,9 @@ public class ActDetalleRequerimiento extends ActRequerimiento implements Abstrac
 
         Map<String, Object> params = new HashMap<>();
         params.put("idRequerimiento", idRequerimiento);
-        serviceRequerimiento = new ServiceRequerimiento(this, true);
+        serviceRequerimiento = new ServiceRequerimiento(this, false);
         serviceRequerimiento.execute(3, 1, params);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,6 +120,7 @@ public class ActDetalleRequerimiento extends ActRequerimiento implements Abstrac
     /**METODOS OVERRIDE*/
     @Override
     public void setListeners() {
+        this.tblAVRRepuestos = (TableLayout) findViewById(R.id.tblAVRRepuestos);
         this.boton = (Button) findViewById(R.id.btnAVRCerrar);
         this.boton.setOnClickListener(this);
     }
@@ -127,6 +139,7 @@ public class ActDetalleRequerimiento extends ActRequerimiento implements Abstrac
     public void onViewProcesar(Integer idView, Map<String, Object> result){
         switch (idView){
             case 1: cargarRequerimiento((Requerimiento) result.get("requerimiento")); break;
+            case 2: cargarDetallesRequerimiento((List<DetalleRequerimiento>) result.get("detallesRequerimientos"));
             default: break;
         }
     }
@@ -163,6 +176,36 @@ public class ActDetalleRequerimiento extends ActRequerimiento implements Abstrac
             else
                 llenarText(R.id.lblAVRTipoRepuesto, "No Especificado");
 
+            Map<String, Object> params = new HashMap<>();
+            params.put("idRequerimiento", requerimiento.getIdRequerimiento());
+            serviceDetalleRequerimiento = new ServiceDetalleRequerimiento(this, true);
+            serviceDetalleRequerimiento.execute(2, 2, params);
+        }
+    }
+
+    private void cargarDetallesRequerimiento(List<DetalleRequerimiento> detallesRequerimientos) {
+        if(detallesRequerimientos!=null && detallesRequerimientos.size()>0){
+            this.tabla = tblAVRRepuestos;
+            this.encabezado = new String[]{"Descripcion *", "     ", "Cantidad *", "       ", "Estatus"};
+            TableRow filaEncabezado=this.crearCeldaEncabezado(Color.BLACK, Gravity.LEFT);
+            filaEncabezado.setBackgroundResource(R.drawable.rectangle_head_table);
+            for(int i=0; i<detallesRequerimientos.size(); i++){
+                DetalleRequerimiento detalle = detallesRequerimientos.get(i);
+
+                TextView lblAVRDescripcion = new TextView(this);
+                lblAVRDescripcion.setTextColor(Color.BLACK);
+                lblAVRDescripcion.setText(detalle.getDescripcion());
+                this.insertarObjeto(lblAVRDescripcion, i+1, Gravity.LEFT);
+
+                TextView space1 = new TextView(this);
+                space1.setText("  ");
+                this.insertarObjeto(space1, i+1, Gravity.LEFT);
+
+                TextView lblAVRCantidad = new TextView(this);
+                lblAVRCantidad.setTextColor(Color.BLACK);
+                lblAVRCantidad.setText(String.valueOf(detalle.getCantidad()));
+                this.insertarObjeto(lblAVRCantidad, i+1, Gravity.LEFT);
+            }
         }
     }
 

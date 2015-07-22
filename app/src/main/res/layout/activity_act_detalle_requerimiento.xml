@@ -34,7 +34,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <GridLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -47,66 +47,88 @@
             <TextView
                 android:layout_width="103dp"
                 android:layout_height="match_parent"
-                android:text="Cedula/Rif *"
-                android:layout_gravity="left|top"/>
+                android:text="@string/cedula_no"
+                android:layout_row="0"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="103dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="left|top"
-                android:id="@+id/lblAVRCedula"/>
+                android:id="@+id/lblAVRCedula"
+                android:layout_column="2"
+                android:layout_row="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nombre_razon_social"/>
+                android:text="@string/nombre_razon_social_no"
+                android:layout_row="1"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRNombre"/>
+                android:id="@+id/lblAVRNombre"
+                android:layout_row="1"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/telefono"/>
+                android:text="@string/telefono_no"
+                android:layout_row="3"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRTelefono"/>
+                android:id="@+id/lblAVRTelefono"
+                android:layout_row="3"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/correo"/>
+                android:text="@string/correo_no"
+                android:layout_row="4"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRCorreo"/>
+                android:id="@+id/lblAVRCorreo"
+                android:layout_row="4"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/estado"/>
+                android:text="@string/estado_no"
+                android:layout_row="5"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVREstado"/>
+                android:id="@+id/lblAVREstado"
+                android:layout_row="5"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ciudad"/>
+                android:text="@string/ciudad_no"
+                android:layout_row="6"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRCiudad"/>
+                android:id="@+id/lblAVRCiudad"
+                android:layout_row="6"
+                android:layout_column="2" />
 
-         </LinearLayout>
+         </GridLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -122,7 +144,7 @@
                 android:textColor="@color/Blanco"/>
         </LinearLayout>
 
-        <LinearLayout
+        <GridLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -135,54 +157,74 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/marca"/>
+                android:text="@string/marca_no"
+                android:layout_row="0"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRMarca"/>
+                android:id="@+id/lblAVRMarca"
+                android:layout_row="0"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/modelo"/>
+                android:text="@string/modelo_no"
+                android:layout_row="1"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRModelo"/>
+                android:id="@+id/lblAVRModelo"
+                android:layout_row="1"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/anno"/>
+                android:text="@string/anno_no"
+                android:layout_row="2"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRAnno"/>
+                android:id="@+id/lblAVRAnno"
+                android:layout_row="2"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/serial_carroceria"/>
+                android:text="@string/serial_carroceria_no"
+                android:layout_row="3"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRSerial"/>
+                android:id="@+id/lblAVRSerial"
+                android:layout_row="3"
+                android:layout_column="2" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipo_repuesto"/>
+                android:text="@string/tipo_repuesto_no"
+                android:layout_row="4"
+                android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblAVRTipoRepuesto"/>
+                android:id="@+id/lblAVRTipoRepuesto"
+                android:layout_row="4"
+                android:layout_column="2" />
 
-        </LinearLayout>
+        </GridLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -214,6 +256,7 @@
                 android:layout_alignParentEnd="true"
                 android:focusableInTouchMode="true"
                 android:id="@+id/tblAVRRepuestos"
+                android:paddingTop="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:background="@drawable/rectangle_table_base"

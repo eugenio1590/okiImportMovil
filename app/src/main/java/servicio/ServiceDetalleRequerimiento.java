@@ -1,15 +1,11 @@
 package servicio;
 
-import android.util.Log;
-
+import java.util.List;
 import java.util.Map;
 
 import modelo.DetalleRequerimiento;
 
-/**
- * Created by Usuario on 01/07/2015.
- */
-public class ServiceDetalleRequerimiento extends AbstractAsyncTask {
+public final class ServiceDetalleRequerimiento extends AbstractAsyncTask {
     /**
      * Constructor
      *
@@ -24,7 +20,9 @@ public class ServiceDetalleRequerimiento extends AbstractAsyncTask {
     protected Map<String, Object> doInBackground(Integer id, Map params) {
         Map<String, Object> result = null;
         switch(id){
-            case 1: result = registrarDetalleRequerimiento(params);
+            case 1: result = registrarDetalleRequerimiento(params); break;
+            case 2: result = consultarDettallesRequerimiento(params); break;
+
         }
         return result;
     }
@@ -42,6 +40,19 @@ public class ServiceDetalleRequerimiento extends AbstractAsyncTask {
             Map<String, Object> mapModel = (Map<String, Object>) result.get("detalleRequerimiento");
             detalleRequerimiento = (DetalleRequerimiento) getToJSONObject(DetalleRequerimiento.class, mapModel);
             result.put("detalleRequerimiento", detalleRequerimiento);
+        }
+        return result;
+    }
+
+    private Map<String,Object> consultarDettallesRequerimiento(Map params) {
+        Map<String, Object> result = null;
+        Integer idRequerimiento = (Integer) params.get("idRequerimiento");
+        if(idRequerimiento!=null){
+            result = (Map<String, Object>) getToJSON("/gestionTransacciones/requerimientos/"+idRequerimiento+"/detallesRequerimientos", "", Map.class);
+            List<Map<String, Object>> mapDetallesRequerimientos = (List<Map<String, Object>>) result.get("detallesRequerimientos");
+            List<DetalleRequerimiento> detallesRequerimientos
+                    = (List<DetalleRequerimiento>) getToJSONList(DetalleRequerimiento.class, mapDetallesRequerimientos);
+            result.put("detallesRequerimientos", detallesRequerimientos);
         }
         return result;
     }

@@ -5,14 +5,12 @@ import java.util.Map;
 
 import modelo.MarcaVehiculo;
 
-/**
- * Created by Usuario on 27/06/2015.
- */
-public class ServiceMarcaVehiculo extends AbstractAsyncTask {
+public final class ServiceMarcaVehiculo extends AbstractAsyncTask {
     /**
      * Constructor
      *
      * @param padre  : Activity que instancio el BackgroundTask
+     * @param closeFrgProgressBar
      */
     public ServiceMarcaVehiculo(IComunicatorBackgroundTask padre, boolean closeFrgProgressBar) {
         super(padre, MarcaVehiculo.class, closeFrgProgressBar);

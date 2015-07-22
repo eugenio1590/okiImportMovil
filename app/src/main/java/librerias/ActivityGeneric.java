@@ -303,17 +303,21 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 	
 	/**TABLAS*/
 	//1. Creara el encabezado de las columnas de acuerdo a un color especifico
-	protected void crearCeldaEncabezado(int color) {
+	protected TableRow crearCeldaEncabezado(int color, int gravity) {
 		if(tabla!=null){
 			for (int i = 0; i < encabezado.length; i++) {
-				insertarCampoLabel(encabezado[i], 0); //El cero Significa la fila unica que se creara
+				insertarCampoLabel(encabezado[i], 0, gravity); //El cero Significa la fila unica que se creara
 				label.setTextColor(color);
 			}
 		}
+        else
+            fila = null;
+
+        return fila;
 	}
 	
 	//2. Insertara un campo TextView en la columna "index" de la tabla referenciada
-	protected void insertarCampoLabel(String valor, int index) {
+	protected void insertarCampoLabel(String valor, int index, int gravity) {
 		if(tabla!=null){
 			
 			label = new TextView(this);
@@ -323,7 +327,7 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 			label.setTypeface(null, Typeface.BOLD);
 			label.setText(valor);
 			
-			insertarObjeto(label, index, Gravity.CENTER);
+			insertarObjeto(label, index, gravity);
 		}
 	}
 	
@@ -375,7 +379,7 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 	}
 	
 	//6. Insertara una fila completa en la tabla referenciada mediante un arreglo de datos
-	protected void  insertarFila(String[] valores, boolean editable, int index, int tipo_acceso){
+	protected void  insertarFila(String[] valores, boolean editable, int index, int tipo_acceso, int gravity){
 		
 		if(tabla!=null){
 			int fila = 0;
@@ -387,7 +391,7 @@ public abstract class ActivityGeneric extends Activity implements IFuncionesGene
 			
 			for(int i=0; i<valores.length; i++){
 				if(!editable)
-					insertarCampoLabel(valores[i], fila);
+					insertarCampoLabel(valores[i], fila, gravity);
 				else
 					insertarCampoEditable(valores[i], fila, tipo_acceso);
 			}
