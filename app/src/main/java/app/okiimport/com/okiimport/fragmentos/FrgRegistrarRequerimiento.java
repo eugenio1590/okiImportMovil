@@ -247,17 +247,7 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     protected void setValidator(View view) {
         ViewValidator viewValidator;
 
-        viewValidator = findViewValidator(R.id.vvFRQCedula, view);
-        txtValidatorFRQCedula = addTxtValidatorNotEmpty(view, R.id.txtFRQCedula, txtValidatorFRQCedula, viewValidator);
-
-        viewValidator = findViewValidator(R.id.vvFRQNombre, view);
-        txtValidatorFRQNombre = addTxtValidatorNotEmpty(view, R.id.txtFRQNombre, txtValidatorFRQNombre, viewValidator);
-
-        viewValidator = findViewValidator(R.id.vvFRQTelefono, view);
-        txtValidatorFRQTelefono = addTxtValidatorNotEmpty(view, R.id.txtFRQTelefono, txtValidatorFRQTelefono, viewValidator);
-
-        viewValidator = findViewValidator(R.id.vvFRQCorreo, view);
-        txtValidatorFRQCorreo = addTxtValidatorNotEmpty(view, R.id.txtFRQCorreo, txtValidatorFRQCorreo, viewValidator);
+        agregarRestricionesCliente(view);
 
         viewValidator = findViewValidator(R.id.vvFRQModelo, view);
         txtValidatorFRQModelo = addTxtValidatorNotEmpty(view, R.id.txtFRQModelo, txtValidatorFRQModelo, viewValidator);
@@ -316,24 +306,10 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
                     return false;
             }
         }
-        else //Mostrar Mensaje
-        /**
-         //9. Mostrar Mensaje Toast
-         protected void mostrarToast(String mensaje){
-
-         Toast toast = Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_SHORT);
-         View textView = toast.getView();
-         LinearLayout icono = new LinearLayout(getApplicationContext());
-         icono.setOrientation(LinearLayout.HORIZONTAL);
-         ImageView view = new ImageView(getApplicationContext());
-         view.setImageResource(android.R.drawable.ic_menu_info_details);
-         icono.addView(view);
-         icono.addView(textView);
-         toast.setView(icono);
-         toast.show();
-         }
-         * */
+        else {
+            mostrarToast("Agregue al Menos un Repuesto", null);
             return false;
+        }
 
         return true;
     }
@@ -344,10 +320,8 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
 
         limpiarRestricciones(view);
 
-        limpiarGeneric(R.id.txtFRQCedula);
-        limpiarGeneric(R.id.txtFRQNombre);
-        limpiarGeneric(R.id.txtFRQCorreo);
-        limpiarGeneric(R.id.txtFRQTelefono);
+        limpiarDatosCliente(true);
+
         limpiarGeneric(R.id.txtFRQModelo);
         limpiarGeneric(R.id.txtFRQAnno);
         limpiarGeneric(R.id.txtFRQSerial);
@@ -382,6 +356,36 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
     }
 
     /**METODOS PROPIOS DE LA CLASE*/
+    private void agregarRestricionesCliente(View view){
+        ViewValidator viewValidator;
+
+        viewValidator = findViewValidator(R.id.vvFRQCedula, view);
+        txtValidatorFRQCedula = addTxtValidatorNotEmpty(view, R.id.txtFRQCedula, txtValidatorFRQCedula, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQNombre, view);
+        txtValidatorFRQNombre = addTxtValidatorNotEmpty(view, R.id.txtFRQNombre, txtValidatorFRQNombre, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQTelefono, view);
+        txtValidatorFRQTelefono = addTxtValidatorNotEmpty(view, R.id.txtFRQTelefono, txtValidatorFRQTelefono, viewValidator);
+
+        viewValidator = findViewValidator(R.id.vvFRQCorreo, view);
+        txtValidatorFRQCorreo = addTxtValidatorNotEmpty(view, R.id.txtFRQCorreo, txtValidatorFRQCorreo, viewValidator);
+    }
+
+    private void limpiarDatosCliente(boolean withCedula){
+        View view = getView();
+
+        limpiarRestriccionesCliente(view);
+
+        if(withCedula)
+            limpiarGeneric(R.id.txtFRQCedula);
+        limpiarGeneric(R.id.txtFRQNombre);
+        limpiarGeneric(R.id.txtFRQCorreo);
+        limpiarGeneric(R.id.txtFRQTelefono);
+
+        agregarRestricionesCliente(view);
+    }
+
     private void cargarListaEstado(Map<String, Object> result){
         estados = (List<Estado>) result.get("estados");
         if(estados!=null) {
@@ -428,10 +432,11 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
             EditText txtFRQTelefono = (EditText) getView().findViewById(R.id.txtFRQTelefono);
             txtFRQTelefono.setText(cliente.getTelefono());
         }
+        else
+            limpiarDatosCliente(false);
     }
 
-    private void limpiarRestricciones(View view){
-
+    private void limpiarRestriccionesCliente(View view){
         txtValidatorFRQCedula = removeTxtValidator(view, R.id.txtFRQCedula, txtValidatorFRQCedula);
 
         txtValidatorFRQNombre = removeTxtValidator(view, R.id.txtFRQNombre, txtValidatorFRQNombre);
@@ -439,6 +444,11 @@ public class FrgRegistrarRequerimiento extends FrgRequerimiento implements OnIte
         txtValidatorFRQTelefono = removeTxtValidator(view, R.id.txtFRQTelefono, txtValidatorFRQTelefono);
 
         txtValidatorFRQCorreo = removeTxtValidator(view, R.id.txtFRQCorreo, txtValidatorFRQCorreo);
+    }
+
+    private void limpiarRestricciones(View view){
+
+        limpiarRestriccionesCliente(view);
 
         txtValidatorFRQModelo = removeTxtValidator(view, R.id.txtFRQModelo, txtValidatorFRQModelo);
 

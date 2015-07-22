@@ -1,10 +1,14 @@
 package app.okiimport.com.okiimport.fragmentos;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.Map;
 import java.util.Vector;
@@ -92,6 +96,20 @@ public abstract class FrgRequerimiento extends Fragmento {
         EditText txtView = (EditText) view.findViewById(id);
         txtView.removeTextChangedListener(validator);
         return (T) null;
+    }
+
+    protected void mostrarToast(String mensaje, Integer icon){
+        Context context = this.getActivity();
+        Toast toast = Toast.makeText(context, mensaje, Toast.LENGTH_SHORT);
+        View textView = toast.getView();
+        LinearLayout icono = new LinearLayout(context);
+        icono.setOrientation(LinearLayout.HORIZONTAL);
+        ImageView view = new ImageView(context);
+        view.setImageResource((icon==null) ? android.R.drawable.ic_menu_info_details : icon);
+        icono.addView(view);
+        icono.addView(textView);
+        toast.setView(icono);
+        toast.show();
     }
 
     /**METODOS ESTATICOS DE LA CLASE*/
