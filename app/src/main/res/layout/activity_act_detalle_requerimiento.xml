@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="103dp"
                 android:layout_height="match_parent"
-                android:text="@string/cedula_no"
+                android:text="@string/cedula_no_endline"
                 android:layout_row="0"
                 android:layout_column="0" />
 
@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nombre_razon_social_no"
+                android:text="@string/nombre_razon_social_no_endline"
                 android:layout_row="1"
                 android:layout_column="0" />
 
@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/telefono_no"
+                android:text="@string/telefono_no_endline"
                 android:layout_row="3"
                 android:layout_column="0" />
 
@@ -89,7 +89,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/correo_no"
+                android:text="@string/correo_no_endline"
                 android:layout_row="4"
                 android:layout_column="0" />
 
@@ -103,7 +103,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/estado_no"
+                android:text="@string/estado_no_endline"
                 android:layout_row="5"
                 android:layout_column="0" />
 
@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ciudad_no"
+                android:text="@string/ciudad_no_endline"
                 android:layout_row="6"
                 android:layout_column="0" />
 
@@ -157,7 +157,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/marca_no"
+                android:text="@string/marca_no_endline"
                 android:layout_row="0"
                 android:layout_column="0" />
 
@@ -171,7 +171,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/modelo_no"
+                android:text="@string/modelo_no_endline"
                 android:layout_row="1"
                 android:layout_column="0" />
 
@@ -185,7 +185,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/anno_no"
+                android:text="@string/anno_no_endline"
                 android:layout_row="2"
                 android:layout_column="0" />
 
@@ -199,7 +199,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/serial_carroceria_no"
+                android:text="@string/serial_carroceria_no_endline"
                 android:layout_row="3"
                 android:layout_column="0" />
 
@@ -213,7 +213,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tipo_repuesto_no"
+                android:text="@string/tipo_repuesto_no_endline"
                 android:layout_row="4"
                 android:layout_column="0" />
 
@@ -269,14 +269,6 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/campos_obligatorios"
-                android:textColor="@color/Rojo"
-                android:layout_row="0"
-                android:layout_column="0" />
 
             <Button
                 android:layout_width="wrap_content"

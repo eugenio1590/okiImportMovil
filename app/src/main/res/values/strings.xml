@@ -32,26 +32,37 @@
         <!-- _no: campos no obligatorios-->
     <string name="cedula">Cedula/Rif *</string>
     <string name="cedula_no">Cedula/Rif</string>
+    <string name="cedula_no_endline">Cedula/Rif:</string>
     <string name="nombre_razon_social">Nombre (s) / Razón Social *</string>
     <string name="nombre_razon_social_no">Nombre (s) / Razón Social</string>
+    <string name="nombre_razon_social_no_endline">Nombre (s) / \nRazón Social:</string>
     <string name="telefono">Telefono *</string>
     <string name="telefono_no">Telefono</string>
+    <string name="telefono_no_endline">Telefono:</string>
     <string name="correo">Correo *</string>
     <string name="correo_no">Correo</string>
+    <string name="correo_no_endline">Correo:</string>
     <string name="estado">Estado *</string>
     <string name="estado_no">Estado</string>
+    <string name="estado_no_endline">Estado:</string>
     <string name="ciudad">Ciudad *</string>
     <string name="ciudad_no">Ciudad</string>
+    <string name="ciudad_no_endline">Ciudad:</string>
 
     <string name="marca">Marca *</string>
     <string name="marca_no">Marca</string>
+    <string name="marca_no_endline">Marca:</string>
     <string name="modelo">Modelo *</string>
     <string name="modelo_no">Modelo</string>
+    <string name="modelo_no_endline">Modelo:</string>
     <string name="anno">Año *</string>
     <string name="anno_no">Año</string>
+    <string name="anno_no_endline">Año:</string>
     <string name="serial_carroceria">Serial de Carroceria *</string>
     <string name="serial_carroceria_no">Serial de Carroceria</string>
+    <string name="serial_carroceria_no_endline">Serial de Carroceria:</string>
     <string name="tipo_repuesto">Tipo de Repuesto *</string>
     <string name="tipo_repuesto_no">Tipo de Repuesto</string>
+    <string name="tipo_repuesto_no_endline">Tipo de Repuesto:</string>
 
 </resources>

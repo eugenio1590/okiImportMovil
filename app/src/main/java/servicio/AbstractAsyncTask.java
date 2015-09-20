@@ -47,7 +47,7 @@ import librerias.componentes.Fragmento;
 
 public abstract class AbstractAsyncTask<T> extends AsyncTask<Void, Void, Map<String, Object>> {
 
-    protected static final String URL = "http://192.168.1.114:8080/web_service/rest";
+    protected static final String URL = "http://192.168.1.103:8080/web_service/rest";
 
     private static ProgressDialog frgProgressBar;
 
